@@ -1,0 +1,17 @@
+@import './settings';
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+  margin: 0;
+   font-family: "League Spartan", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+a,
+a:visited {
+  color: inherit;
+}

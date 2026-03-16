@@ -1,0 +1,88 @@
+
+
+$purple: rgb(124, 93, 250);         
+$purple-light: rgb(146, 119, 255);  
+$navy: rgb(30, 33, 57);             
+$navy-light: rgb(37, 41, 69);      
+$lavender: rgb(223, 227, 250);     
+$grey-blue: rgb(136, 142, 176);     
+$periwinkle: rgb(126, 136, 195);   
+$black: rgb(12, 14, 22);           
+$navy-dark: rgb(20, 22, 37);       
+$red: rgb(236, 87, 87);            
+$red-light: rgb(255, 151, 151);     
+$bg-light: rgb(248, 248, 251);      
+
+
+:root {
+  --purple: #{$purple};
+  --purple-light: #{$purple-light};
+  --navy: #{$navy};
+  --navy-light: #{$navy-light};
+  --lavender: #{$lavender};
+  --grey-blue: #{$grey-blue};
+  --periwinkle: #{$periwinkle};
+  --black: #{$black};
+  --navy-dark: #{$navy-dark};
+  --red: #{$red};
+  --red-light: #{$red-light};
+  --bg-light: #{$bg-light};
+}
+
+
+
+$font-family: "League Spartan", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+
+@mixin heading-l {
+  font-family: $font-family;
+  font-size: 36px;
+  line-height: 33px;
+  letter-spacing: -1px;
+  font-weight: 700;
+}
+
+
+@mixin heading-m {
+  font-family: $font-family;
+  font-size: 24px;
+  line-height: 22px;
+  letter-spacing: -0.75px;
+  font-weight: 700;
+}
+
+
+@mixin heading-s {
+  font-family: $font-family;
+  font-size: 15px;
+  line-height: 24px;
+  letter-spacing: -0.25px;
+  font-weight: 700;
+}
+
+
+@mixin heading-s-variant {
+  font-family: $font-family;
+  font-size: 15px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  font-weight: 700;
+}
+
+
+@mixin body {
+  font-family: $font-family;
+  font-size: 13px;
+  line-height: 18px;
+  letter-spacing: -0.1px;
+  font-weight: 500;
+}
+
+
+@mixin body-variant {
+  font-family: $font-family;
+  font-size: 13px;
+  line-height: 15px;
+  letter-spacing: -0.25px;
+  font-weight: 500;
+}
