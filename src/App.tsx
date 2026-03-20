@@ -1,5 +1,12 @@
-import React from "react";
+import Container from "./components/Container/Container";
+import Nav from "./components/Nav/Nav";
+import Invoices from "./pages/Invoices/Invoices";
 
 export default function App() {
-  return <div>App again, czy to sie wyswietla</div>;
+  return (
+    <Container>
+      <Nav />
+      <Invoices />
+    </Container>
+  );
 }

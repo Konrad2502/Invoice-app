@@ -1,0 +1,207 @@
+
+@import "../../styles/main.scss";
+
+
+
+.invoices {
+  width: 100%;
+  height: 100%;
+  background-color: $lavender;
+}
+
+.invoices__content {
+  max-width: 800px;
+  height: 100%;
+  margin: 0 auto;
+  padding-top: 80px;
+}
+
+.invoices__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.invoices__header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.invoices__header-title {
+  @include heading-l;
+}
+
+.invoices__header-text {
+  @include heading-s;
+  color: $periwinkle;
+}
+
+.invoices__buttons {
+  display: flex;
+  gap: 40px;
+}
+
+.invoices__filter {
+  display: flex;
+  width: 140px;
+  gap: 10px;
+  height: 50px;
+  padding: 10px;
+  align-items: center;
+  border: none;
+  background-color: inherit;
+  cursor: pointer;
+}
+
+.invoices__filter-arrow {
+  width: 15px;
+  height: 10px;
+}
+
+.invoices__filter-text {
+  @include heading-s-variant;
+}
+
+.invoices__add {
+  display: flex;
+  width: 160px;
+  gap: 10px;
+  background-color: $purple;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: $purple-light;
+  }
+}
+
+.invoices__add-icon {
+  background-color: $bg-light;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.invoices__add-plus {
+  width: 12px;
+  height: 12px;
+}
+
+.invoices__add-text {
+  @include heading-s;
+  color: $bg-light;
+}
+
+/* bottom list*/
+
+.invoices__bottom {
+  margin-top: 56px;
+}
+
+.invoices__list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.invoices__item {
+  background-color: $bg-light;
+  border-radius: 10px;
+  padding: 22px 24px;
+  display: grid;
+  grid-template-columns: 110px 140px 1fr 140px 130px 24px;
+  align-items: center;
+  column-gap: 16px;
+  box-shadow:
+    0 10px 24px rgba(72, 84, 159, 0.10); 
+}
+
+
+.invoices__id {
+  @include heading-s;
+}
+
+.invoices__hash {
+  color: $periwinkle;
+}
+
+.invoices__meta {
+  font-family: $font-family;
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0;
+  font-weight: 500;
+  color: $periwinkle;
+}
+
+.invoices__amount {
+  @include heading-s;
+  justify-self: end;
+}
+
+.invoices__status {
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 104px;
+  height: 40px;
+  border-radius: 6px;
+  font-family: $font-family;
+  font-size: 14px;
+  line-height: 1;
+  letter-spacing: 0;
+  font-weight: 700;
+}
+
+.invoices__status-text {
+  display: inline-block;
+}
+
+.invoices__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+/* Paid */
+.invoices__status--paid {
+  color: $green-light;
+  background-color: rgba(51, 214, 159, 0.1);
+}
+.invoices__dot--paid {
+  background-color: $green-light;
+}
+
+/* Pending */
+.invoices__status--pending {
+  color: $orange;
+  background-color: rgba(255, 143, 0, 0.1);
+}
+.invoices__dot--pending {
+  background-color: $orange;
+}
+
+/* Draft */
+.invoices__status--draft {
+  color: $black;
+  background-color: rgba(12, 14, 22, 0.08);
+}
+.invoices__dot--draft {
+  background-color: $black;
+}
+
+.invoices__chevron {
+  justify-self: end;
+  width: 8px;
+  height: 10px;
+}
