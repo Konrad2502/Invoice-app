@@ -1,7 +1,4 @@
-
 @import "../../styles/main.scss";
-
-
 
 .invoices {
   width: 100%;
@@ -100,7 +97,117 @@
   color: $bg-light;
 }
 
-/* bottom list*/
+/* Filter popup */
+
+.invoices__filter-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.invoices__filter-popup {
+  position: absolute;
+  top: calc(100% + 16px);
+  left: 0;
+  width: 192px;
+  padding: 20px 18px;
+  border-radius: 10px;
+  background: $bg-light;
+  box-shadow: 0 18px 40px rgba(72, 84, 159, 0.22);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 20;
+}
+
+.invoices__filter-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+
+  &:hover .invoices__filter-box {
+    outline: 1px solid $purple;
+  }
+}
+
+.invoices__filter-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.invoices__filter-box {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  background: $lavender;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  outline: 1px solid transparent;
+  transition: outline-color 0.15s ease, background-color 0.15s ease;
+}
+
+.invoices__filter-check {
+  width: 8px;
+  height: 6px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.invoices__filter-label {
+  @include heading-s;
+}
+
+.invoices__filter-input:checked + .invoices__filter-box {
+  background: $purple;
+}
+
+.invoices__filter-input:checked + .invoices__filter-box .invoices__filter-check {
+  opacity: 1;
+}
+
+/* Empty state */
+
+.invoices__empty {
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 16px;
+}
+
+.invoices__empty-img {
+  width: 240px;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 40px;
+}
+
+.invoices__empty-heading {
+  @include heading-m;
+  margin-bottom: 18px;
+}
+
+.invoices__empty-text {
+  font-family: $font-family;
+  font-size: 13px;
+  line-height: 1.4;
+  letter-spacing: -0.1px;
+  font-weight: 500;
+  color: $periwinkle;
+  max-width: 260px;
+
+  span {
+    @include heading-s;
+    color: $navy;
+  }
+}
+
+/*bottom list */
 
 .invoices__bottom {
   margin-top: 56px;
@@ -120,10 +227,8 @@
   grid-template-columns: 110px 140px 1fr 140px 130px 24px;
   align-items: center;
   column-gap: 16px;
-  box-shadow:
-    0 10px 24px rgba(72, 84, 159, 0.10); 
+  box-shadow: 0 10px 24px rgba(72, 84, 159, 0.10);
 }
-
 
 .invoices__id {
   @include heading-s;
@@ -165,6 +270,7 @@
 
 .invoices__status-text {
   display: inline-block;
+  text-transform: capitalize;
 }
 
 .invoices__dot {
