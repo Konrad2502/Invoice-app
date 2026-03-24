@@ -54,6 +54,11 @@
 .invoices__filter-arrow {
   width: 15px;
   height: 10px;
+  transition: transform 0.15s ease;
+}
+
+.invoices__filter-arrow--open {
+    transform: rotate(180deg)
 }
 
 .invoices__filter-text {

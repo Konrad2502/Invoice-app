@@ -1,0 +1,294 @@
+
+@import "../../styles/main.scss";
+
+
+.invoice-details {
+  width: 100%;
+  min-height: 100vh;
+  background: $lavender;
+}
+
+.invoice-details__content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 80px 0;
+}
+
+.invoice-details__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 6px 0;
+}
+
+.invoice-details__back-text {
+  @include heading-m;
+  color: $periwinkle;
+}
+
+.invoice-details__back-icon {
+  width: 7px;
+  height: 10px;
+  transition: transform 0.2s ease;
+}
+
+.invoice-details__back:hover .invoice-details__back-icon {
+  transform: translateX(-3px);
+}
+
+.invoice-details__status-bar {
+  margin-top: 26px;
+  background: $bg-light;
+  border-radius: 10px;
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 10px 24px rgba(72, 84, 159, 0.10);
+}
+
+.invoice-details__status-left {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.invoice-details__status-label {
+  @include standard;
+  color: $periwinkle;
+}
+
+.invoice-details__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-width: 104px;
+  height: 40px;
+  border-radius: 6px;
+  @include standard;
+}
+
+.invoice-details__badge-text {
+  text-transform: capitalize;
+}
+
+.invoice-details__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+
+.invoice-details__badge--pending {
+  color: $orange;
+  background: rgba(255, 143, 0, 0.10);
+}
+.invoice-details__dot--pending {
+  background: $orange;
+}
+
+.invoice-details__badge--paid {
+  color: $green-light;
+  background: rgba(51, 214, 159, 0.10);
+}
+.invoice-details__dot--paid {
+  background: $green-light;
+}
+
+.invoice-details__badge--draft {
+  color: $black;
+  background: rgba(12, 14, 22, 0.08);
+}
+.invoice-details__dot--draft {
+  background: $black;
+}
+
+.invoice-details__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.invoice-details__btn {
+  border: none;
+  border-radius: 24px;
+  padding: 14px 24px;
+  cursor: pointer;
+  @include standard;
+  letter-spacing:0ch;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.invoice-details__btn:hover {
+  transform: translateY(-1px);
+  opacity: 0.92;
+}
+
+.invoice-details__btn--edit {
+  background: $lavender;
+  color: $grey-blue;
+}
+
+.invoice-details__btn--delete {
+  background: $orange;
+  color: $bg-light;
+}
+
+.invoice-details__btn--mark {
+  background: $periwinkle;
+  color: $bg-light;
+}
+
+.invoice-details__card {
+  margin-top: 24px;
+  background: $bg-light;
+  border-radius: 10px;
+  padding: 28px;
+  box-shadow: 0 10px 24px rgba(72, 84, 159, 0.10);
+}
+
+.invoice-details__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.invoice-details__code-id {
+  @include heading-m;
+  color: $black;
+  margin-bottom: 8px;
+}
+
+.invoice-details__hash {
+  color: $periwinkle;
+}
+
+.invoice-details__code-desc {
+  @include heading-s;
+  color: $periwinkle;
+}
+
+.invoice-details__sender {
+  text-align: right;
+}
+
+.invoice-details__small {
+  @include heading-s;
+  color: $periwinkle;
+  line-height: 1.6;
+}
+
+.invoice-details__middle {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 36px;
+}
+
+.invoice-details__dates {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between
+}
+
+.invoice-details__label {
+  @include heading-s;
+  color: $periwinkle;
+  margin-bottom: 12px;
+}
+
+.invoice-details__value {
+  @include standard;
+  color: $black;
+}
+
+.invoice-details__address {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.invoice-details__items {
+  margin-top: 40px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(223, 227, 250, 0.35);
+}
+
+.invoice-details__items-head {
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 1fr 90px 120px 120px;
+  gap: 16px;
+}
+
+.invoice-details__items-label {
+  @include heading-s;
+  color: $periwinkle;
+}
+
+.invoice-details__items-label--qty,
+.invoice-details__item-qty {
+  text-align: center;
+}
+
+.invoice-details__items-label--price,
+.invoice-details__item-price {
+  text-align: right;
+}
+
+.invoice-details__items-label--total,
+.invoice-details__item-total {
+  text-align: right;
+}
+
+.invoice-details__items-row {
+  padding: 18px 24px;
+  display: grid;
+  grid-template-columns: 1fr 90px 120px 120px;
+  gap: 16px;
+}
+
+.invoice-details__item-name {
+  @include standard;
+  color: $black;
+}
+
+.invoice-details__item-qty {
+  @include standard;
+  color: $periwinkle;
+}
+
+.invoice-details__item-price {
+  @include standard;
+  color: $periwinkle;
+}
+
+.invoice-details__item-total {
+  @include standard;
+  color: $black;
+}
+
+.invoice-details__amount {
+  background: $navy;
+  padding: 26px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.invoice-details__amount-label {
+  @include standard;
+  color: $bg-light;
+}
+
+.invoice-details__amount-value {
+  @include heading-l;
+  color: $bg-light;
+}

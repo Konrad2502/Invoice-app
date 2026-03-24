@@ -10,6 +10,7 @@ import emptyData from "../../assets/illustration-empty.svg";
 import check from "../../assets/icon-check.svg";
 import { useEffect, useRef, useState, useMemo } from "react";
 import type { InvoiceStatus } from "../../features/appData/appDataTypes";
+import InvoiceDetails from "../InvoiceDetails/InvoiceDetails";
 
 export default function Invoices() {
   const data = useAppSelector(selectAppData);
@@ -71,7 +72,7 @@ export default function Invoices() {
               >
                 <p className="invoices__filter-text">Filter by status</p>
                 <img
-                  className="invoices__filter-arrow"
+                  className={`invoices__filter-arrow ${filterDropdown ? "invoices__filter-arrow--open" : ""}`}
                   src={arrowDown}
                   alt=""
                 />
@@ -181,6 +182,7 @@ export default function Invoices() {
             )}
           </div>
         </div>
+        <InvoiceDetails />
       </div>
     </main>
   );
