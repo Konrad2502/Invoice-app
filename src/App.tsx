@@ -5,6 +5,8 @@ import { selectAppDataStatus } from "./features/appData/appDataSelectors";
 import Invoices from "./pages/Invoices/Invoices";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { fetchAppData } from "./features/appData/appDataSlice";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import InvoiceDetails from "./pages/InvoiceDetails/InvoiceDetails";
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -17,9 +19,14 @@ export default function App() {
   }, [status, dispatch]);
 
   return (
-    <Container>
-      <Nav />
-      <Invoices />
-    </Container>
+    <BrowserRouter>
+      <Container>
+        <Nav />
+        <Routes>
+          <Route path="/" element={<Invoices />} />
+          <Route path="/invoices/:id" element={<InvoiceDetails />} />
+        </Routes>
+      </Container>
+    </BrowserRouter>
   );
 }

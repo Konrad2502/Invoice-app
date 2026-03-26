@@ -10,7 +10,7 @@ import emptyData from "../../assets/illustration-empty.svg";
 import check from "../../assets/icon-check.svg";
 import { useEffect, useRef, useState, useMemo } from "react";
 import type { InvoiceStatus } from "../../features/appData/appDataTypes";
-import InvoiceDetails from "../InvoiceDetails/InvoiceDetails";
+import { useNavigate } from "react-router-dom";
 
 export default function Invoices() {
   const data = useAppSelector(selectAppData);
@@ -53,6 +53,8 @@ export default function Invoices() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [filterDropdown]);
+
+  const navigate = useNavigate();
 
   return (
     <main className="invoices">
@@ -158,7 +160,11 @@ export default function Invoices() {
               </div>
             ) : (
               filteredData.map((item) => (
-                <article key={item.id} className="invoices__item">
+                <article
+                  key={item.id}
+                  className="invoices__item"
+                  onClick={() => navigate(`/invoices/${item.id}`)}
+                >
                   <p className="invoices__id">
                     <span className="invoices__hash">#</span>
                     {item.code}
@@ -182,7 +188,6 @@ export default function Invoices() {
             )}
           </div>
         </div>
-        <InvoiceDetails />
       </div>
     </main>
   );
