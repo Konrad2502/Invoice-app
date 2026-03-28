@@ -11,8 +11,13 @@ import check from "../../assets/icon-check.svg";
 import { useEffect, useRef, useState, useMemo } from "react";
 import type { InvoiceStatus } from "../../features/appData/appDataTypes";
 import { useNavigate } from "react-router-dom";
+import type { InvoiceDrawerMode } from "../InvoiceDrawer/InvoiceDrawer";
 
-export default function Invoices() {
+type InvoiceType = {
+  setDrawerMode: (mode: InvoiceDrawerMode) => void;
+};
+
+export default function Invoices({ setDrawerMode }: InvoiceType) {
   const data = useAppSelector(selectAppData);
   console.log(data);
 
@@ -136,7 +141,10 @@ export default function Invoices() {
               )}
             </div>
 
-            <button className="invoices__add">
+            <button
+              onClick={() => setDrawerMode("new")}
+              className="invoices__add"
+            >
               <span className="invoices__add-icon">
                 <img className="invoices__add-plus" src={plusIcon} alt="" />
               </span>
