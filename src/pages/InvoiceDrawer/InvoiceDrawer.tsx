@@ -2,6 +2,8 @@ import "./InvoiceDrawer.scss";
 import arrowDown from "../../assets/icon-arrow-down.svg";
 import iconCalendar from "../../assets/icon-calendar.svg";
 import { useState, useRef, useEffect } from "react";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css";
 
 export type InvoiceDrawerMode = "new" | "edit" | null;
 
@@ -11,11 +13,18 @@ type InvoiceDrawerProps = {
 };
 
 export default function InvoiceDrawer({ mode, onClose }: InvoiceDrawerProps) {
-  const [paymentTerms, setPaymnetTerms] = useState(false);
+  const [paymentTerms, setPaymenetTerms] = useState(false);
+  const [calendar, setCalendar] = useState(false);
+
   const paymentRef = useRef<HTMLDivElement | null>(null);
+  const calendarRef = useRef<HTMLDivElement | null>(null);
 
   const togglePayTerms = () => {
-    setPaymnetTerms((p) => !p);
+    setPaymenetTerms((p) => !p);
+  };
+
+  const toggleCalendar = () => {
+    setCalendar((c) => !c);
   };
 
   useEffect(() => {
@@ -24,12 +33,25 @@ export default function InvoiceDrawer({ mode, onClose }: InvoiceDrawerProps) {
       const target = e.target;
       if (!(target instanceof Node)) return;
       if (paymentRef.current && !paymentRef.current.contains(target)) {
-        setPaymnetTerms(false);
+        setPaymenetTerms(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [paymentTerms]);
+
+  useEffect(() => {
+    if (!calendar) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target;
+      if (!(target instanceof Node)) return;
+      if (calendarRef.current && !calendarRef.current.contains(target)) {
+        setCalendar(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => removeEventListener("mousedown", handleClickOutside);
+  }, [calendar]);
 
   const isOpen = mode !== null;
 
@@ -98,7 +120,7 @@ export default function InvoiceDrawer({ mode, onClose }: InvoiceDrawerProps) {
 
             <div className="invoice-drawer__field">
               <label className="invoice-drawer__label" htmlFor="clientName">
-                Client&apos;s Name
+                Client's Name
               </label>
               <input
                 className="invoice-drawer__input"
@@ -110,7 +132,7 @@ export default function InvoiceDrawer({ mode, onClose }: InvoiceDrawerProps) {
 
             <div className="invoice-drawer__field">
               <label className="invoice-drawer__label" htmlFor="clientEmail">
-                Client&apos;s Email
+                Client's Email
               </label>
               <input
                 className="invoice-drawer__input"
@@ -171,12 +193,16 @@ export default function InvoiceDrawer({ mode, onClose }: InvoiceDrawerProps) {
             </div>
 
             <div className="invoice-drawer__grid-2">
-              <div className="invoice-drawer__field">
+              <div ref={calendarRef} className="invoice-drawer__field">
                 <label className="invoice-drawer__label" htmlFor="invoiceDate">
                   Invoice Date
                 </label>
 
-                <button className="invoice-drawer__control" type="button">
+                <button
+                  className="invoice-drawer__control"
+                  type="button"
+                  onClick={toggleCalendar}
+                >
                   <span className="invoice-drawer__control-value">
                     21 Aug 2021
                   </span>
@@ -187,6 +213,11 @@ export default function InvoiceDrawer({ mode, onClose }: InvoiceDrawerProps) {
                     aria-hidden="true"
                   />
                 </button>
+                {calendar && (
+                  <div className="invoice-drawer__calendar">
+                    <DayPicker mode="single" />
+                  </div>
+                )}
               </div>
 
               <div ref={paymentRef} className="invoice-drawer__field">
