@@ -85,7 +85,7 @@
   z-index: 40;
 }
 
-/* Nadpisywanie klas react-day-picker */
+/* react-day-picker */
 .invoice-drawer__calendar .rdp {
   margin: 0;
 }
@@ -238,4 +238,194 @@
   width: 15px;
   height: 11px;
   flex: 0 0 auto;
+}
+
+/*Items section */
+
+.invoice-drawer__items {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.invoice-drawer__items-title {
+  @include heading-m;
+  color: $grey-blue;
+}
+
+.invoice-drawer__items-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 2px;
+}
+
+.invoice-drawer__items-col {
+  @include heading-s;
+  color: $periwinkle;
+}
+
+.invoice-drawer__items-col--name {
+  
+  width: 334px;
+
+}
+
+.invoice-drawer__items-col--qty {
+  width: 54px;
+  text-align: left;
+}
+
+.invoice-drawer__items-col--price {
+  width: 96px;
+  text-align: left;
+}
+
+.invoice-drawer__items-col--total {
+  width: 96px;
+  text-align: center;
+}
+
+.invoice-drawer__add-item {
+  height: 48px;
+  border: none;
+  border-radius: 24px;
+  background: rgba(223, 227, 250, 0.35);
+  cursor: pointer;
+
+  @include heading-s;
+  color: $periwinkle;
+
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background: rgba(223, 227, 250, 0.55);
+    color: $purple;
+  }
+}
+
+
+
+.invoice-drawer__footer {
+  position: sticky;
+  bottom: 0;
+  margin-top: 24px;
+
+  background: $bg-light;
+  padding: 18px 0 8px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.invoice-drawer__footer-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.invoice-drawer__footer-btn {
+  border: none;
+  border-radius: 24px;
+  height: 48px;
+  padding: 0 22px;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+
+  @include heading-s;
+
+  &:hover {
+    opacity: 0.92;
+    transform: translateY(-1px);
+  }
+}
+
+.invoice-drawer__footer-btn--discard {
+  background: rgba(223, 227, 250, 0.35);
+  color: $periwinkle;
+}
+
+.invoice-drawer__footer-btn--draft {
+  background: $navy;
+  color: $bg-light;
+}
+
+.invoice-drawer__footer-btn--save {
+  background: $purple;
+  color: $bg-light;
+}
+
+// Add Items
+
+
+
+.invoice-drawer__items-col--action {
+  width: 32px;
+}
+
+.invoice-drawer__item-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.invoice-drawer__item-input {
+  height: 48px;
+}
+
+.invoice-drawer__item-input--name {
+  flex: 1;
+  min-width: 0;
+}
+
+.invoice-drawer__item-input--qty {
+  width: 54px;
+  text-align: left;
+}
+
+.invoice-drawer__item-input--price {
+  width: 96px;
+  text-align: left;
+}
+
+.invoice-drawer__item-total {
+  width: 96px;
+  text-align: center;
+  @include heading-s;
+  color: $periwinkle;
+}
+
+.invoice-drawer__item-delete {
+  width: 32px;
+  height: 48px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: rgba(223, 227, 250, 0.35);
+  }
+}
+
+.invoice-drawer__item-delete-icon {
+  width: 14px;
+  height: 16px;
+}
+
+
+.invoice-drawer__footer--edit {
+  justify-content: flex-end;
+}
+
+.invoice-drawer__footer--edit .invoice-drawer__footer-btn--discard {
+  background: rgba(223, 227, 250, 0.35);
+  color: $periwinkle;
 }

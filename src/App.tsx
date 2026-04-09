@@ -35,7 +35,7 @@ export default function App() {
             />
             <Route path="/invoices/:id" element={<InvoiceDetails />} />
           </Routes>
-          <InvoiceDrawer mode={drawerMode} onClose={() => {}} />
+          <InvoiceDrawer mode={drawerMode} setDrawerMode={setDrawerMode} />
         </div>
       </Container>
     </BrowserRouter>
