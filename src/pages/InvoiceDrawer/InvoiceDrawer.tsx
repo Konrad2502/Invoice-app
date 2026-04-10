@@ -15,6 +15,9 @@ type InvoiceDrawerProps = {
 
 type ItemRows = {
   id: string;
+  name: string;
+  quantity: string;
+  price: string;
 };
 
 const makeId = () => `${Date.now()}-${Math.random().toString(16).slice(2)}`;
@@ -26,8 +29,9 @@ export default function InvoiceDrawer({
   const [paymentTerms, setPaymentTerms] = useState(false);
   const [calendar, setCalendar] = useState(false);
   const [invoiceDate, setInvoiceDate] = useState<Date | undefined>(undefined);
-  const [selectedPaymentTerms, setSelectedPaymentTerms] =
-    useState("Net 30 Days");
+  const [selectedPaymentTerms, setSelectedPaymentTerms] = useState(
+    "Select payment terms",
+  );
 
   const [formData, setFormData] = useState({
     fromStreet: "",
@@ -40,6 +44,7 @@ export default function InvoiceDrawer({
     toCity: "",
     toPost: "",
     toCountry: "",
+    projectDesc: "",
   });
 
   const [isItemsEditing, setIsItemEditing] = useState(false);
@@ -81,7 +86,25 @@ export default function InvoiceDrawer({
 
   const handleAddNewItem = () => {
     setIsItemEditing(true);
-    setItemRows((prev) => [...prev, { id: makeId() }]);
+    setItemRows((prev) => [
+      ...prev,
+      {
+        id: makeId(),
+        name: "",
+        quantity: "",
+        price: "",
+      },
+    ]);
+  };
+
+  const handleItemChange = (
+    id: string,
+    field: keyof Omit<ItemRows, "id">,
+    value: string,
+  ) => {
+    setItemRows((prev) =>
+      prev.map((row) => (row.id === id ? { ...row, [field]: value } : row)),
+    );
   };
 
   const handleRemoveItems = (id: string) => {
@@ -346,21 +369,21 @@ export default function InvoiceDrawer({
                     <button
                       className="invoice-drawer__terms-option"
                       type="button"
-                      onClick={() => handleSelectPayment("Net 7 Day")}
+                      onClick={() => handleSelectPayment("Net 7 Days")}
                     >
                       Net 7 Days
                     </button>
                     <button
                       className="invoice-drawer__terms-option"
                       type="button"
-                      onClick={() => handleSelectPayment("Net 14 Day")}
+                      onClick={() => handleSelectPayment("Net 14 Days")}
                     >
                       Net 14 Days
                     </button>
                     <button
                       className="invoice-drawer__terms-option"
                       type="button"
-                      onClick={() => handleSelectPayment("Net 30 Day")}
+                      onClick={() => handleSelectPayment("Net 30 Days")}
                     >
                       Net 30 Days
                     </button>
@@ -378,6 +401,8 @@ export default function InvoiceDrawer({
                 id="projectDesc"
                 type="text"
                 placeholder="e.g. Graphic Design Service"
+                value={formData.projectDesc}
+                onChange={handleChange}
               />
             </div>
             <div className="invoice-drawer__items">
@@ -400,10 +425,36 @@ export default function InvoiceDrawer({
 
               {itemRows.map((row) => (
                 <div key={row.id} className="invoice-drawer__item-row">
-                  <input className="invoice-drawer__input invoice-drawer__item-input invoice-drawer__item-input--name" />
-                  <input className="invoice-drawer__input invoice-drawer__item-input invoice-drawer__item-input--qty" />
-                  <input className="invoice-drawer__input invoice-drawer__item-input invoice-drawer__item-input--price" />
-                  <span className="invoice-drawer__item-total">156.00</span>
+                  <input
+                    className="invoice-drawer__input invoice-drawer__item-input invoice-drawer__item-input--name"
+                    type="text"
+                    value={row.name}
+                    onChange={(e) =>
+                      handleItemChange(row.id, "name", e.target.value)
+                    }
+                  />
+
+                  <input
+                    className="invoice-drawer__input invoice-drawer__item-input invoice-drawer__item-input--qty"
+                    type="text"
+                    value={row.quantity}
+                    onChange={(e) =>
+                      handleItemChange(row.id, "quantity", e.target.value)
+                    }
+                  />
+
+                  <input
+                    className="invoice-drawer__input invoice-drawer__item-input invoice-drawer__item-input--price"
+                    type="text"
+                    value={row.price}
+                    onChange={(e) =>
+                      handleItemChange(row.id, "price", e.target.value)
+                    }
+                  />
+
+                  <span className="invoice-drawer__item-total">
+                    {(Number(row.quantity) * Number(row.price)).toFixed(2)}
+                  </span>
 
                   <button
                     className="invoice-drawer__item-delete"
