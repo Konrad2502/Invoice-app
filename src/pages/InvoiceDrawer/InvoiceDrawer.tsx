@@ -5,6 +5,7 @@ import iconCalendar from "../../assets/icon-calendar.svg";
 import { useState, useRef, useEffect } from "react";
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
+import BillFromSection from "./BillFromSection";
 
 export type InvoiceDrawerMode = "new" | "edit" | null;
 
@@ -20,7 +21,7 @@ type ItemRows = {
   price: string;
 };
 
-type FormData = {
+export type FormData = {
   fromStreet: string;
   fromCity: string;
   fromPost: string;
@@ -34,7 +35,7 @@ type FormData = {
   projectDesc: string;
 };
 
-type FormErrors = Partial<Record<keyof FormData, string>>;
+export type FormErrors = Partial<Record<keyof FormData, string>>;
 
 const makeId = () => `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
@@ -269,74 +270,46 @@ export default function InvoiceDrawer({
           >
             <h3 className="invoice-drawer__section-title">Bill From</h3>
 
-            <div className="invoice-drawer__field">
-              <label className="invoice-drawer__label" htmlFor="fromStreet">
-                Street Address
-              </label>
-              <input
-                className={`invoice-drawer__input ${errors.fromStreet ? "invoice-drawer__input--error" : ""}`}
-                id="fromStreet"
-                type="text"
-                placeholder=""
-                value={formData.fromStreet}
-                onChange={handleChange}
-              />
-              {errors.fromStreet && (
-                <p className="invoice-drawer__error">{errors.fromStreet}</p>
-              )}
-            </div>
+            <BillFromSection
+              id="fromStreet"
+              errors={errors.fromStreet}
+              formData={formData.fromStreet}
+              handleChange={handleChange}
+              type="text"
+              placeholder=""
+              label="Street Address"
+            />
 
             <div className="invoice-drawer__grid-3">
-              <div className="invoice-drawer__field">
-                <label className="invoice-drawer__label" htmlFor="fromCity">
-                  City
-                </label>
-                <input
-                  className={`invoice-drawer__input ${errors.fromCity ? "invoice-drawer__input--error" : ""}`}
-                  id="fromCity"
-                  type="text"
-                  placeholder=""
-                  value={formData.fromCity}
-                  onChange={handleChange}
-                />
-                {errors.fromCity && (
-                  <p className="invoice-drawer__error">{errors.fromCity}</p>
-                )}
-              </div>
+              <BillFromSection
+                id="fromCity"
+                errors={errors.fromCity}
+                formData={formData.fromCity}
+                handleChange={handleChange}
+                type="text"
+                placeholder=""
+                label="City"
+              />
 
-              <div className="invoice-drawer__field">
-                <label className="invoice-drawer__label" htmlFor="fromPost">
-                  Post Code
-                </label>
-                <input
-                  className={`invoice-drawer__input ${errors.fromPost ? "invoice-drawer__input--error" : ""}`}
-                  id="fromPost"
-                  type="text"
-                  placeholder=""
-                  value={formData.fromPost}
-                  onChange={handleChange}
-                />
-                {errors.fromPost && (
-                  <p className="invoice-drawer__error">{errors.fromPost}</p>
-                )}
-              </div>
+              <BillFromSection
+                id="fromPost"
+                errors={errors.fromPost}
+                formData={formData.fromPost}
+                handleChange={handleChange}
+                type="text"
+                placeholder=""
+                label="Post code"
+              />
 
-              <div className="invoice-drawer__field">
-                <label className="invoice-drawer__label" htmlFor="fromCountry">
-                  Country
-                </label>
-                <input
-                  className={`invoice-drawer__input ${errors.fromCountry ? "invoice-drawer__input--error" : ""}`}
-                  id="fromCountry"
-                  type="text"
-                  placeholder=""
-                  value={formData.fromCountry}
-                  onChange={handleChange}
-                />
-                {errors.fromCountry && (
-                  <p className="invoice-drawer__error">{errors.fromCountry}</p>
-                )}
-              </div>
+              <BillFromSection
+                id="fromCountry"
+                errors={errors.fromCountry}
+                formData={formData.fromCountry}
+                handleChange={handleChange}
+                type="text"
+                placeholder=""
+                label="Country"
+              />
             </div>
 
             <h3 className="invoice-drawer__section-title">Bill To</h3>
