@@ -194,6 +194,22 @@
   }
 }
 
+.invoice-drawer__input--error {
+  border-color: $red;
+
+  &:focus {
+    border-color: $red;
+  }
+}
+
+.invoice-drawer__error {
+  color: $red;
+  font-size: 12px;
+  font-weight: 700;
+  margin-top: 5px;
+  
+}
+
 .invoice-drawer__grid-3 {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -429,3 +445,4 @@
   background: rgba(223, 227, 250, 0.35);
   color: $periwinkle;
 }
+

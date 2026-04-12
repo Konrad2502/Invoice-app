@@ -20,6 +20,22 @@ type ItemRows = {
   price: string;
 };
 
+type FormData = {
+  fromStreet: string;
+  fromCity: string;
+  fromPost: string;
+  fromCountry: string;
+  clientName: string;
+  clientEmail: string;
+  toStreet: string;
+  toCity: string;
+  toPost: string;
+  toCountry: string;
+  projectDesc: string;
+};
+
+type FormErrors = Partial<Record<keyof FormData, string>>;
+
 const makeId = () => `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 
 export default function InvoiceDrawer({
@@ -29,11 +45,14 @@ export default function InvoiceDrawer({
   const [paymentTerms, setPaymentTerms] = useState(false);
   const [calendar, setCalendar] = useState(false);
   const [invoiceDate, setInvoiceDate] = useState<Date | undefined>(undefined);
+  const [invoiceDateError, setInvoiceDateError] = useState("");
   const [selectedPaymentTerms, setSelectedPaymentTerms] = useState(
     "Select payment terms",
   );
+  const [selectedPaymentTermsError, setSelectedPaymentTermsError] =
+    useState("");
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     fromStreet: "",
     fromCity: "",
     fromPost: "",
@@ -47,18 +66,26 @@ export default function InvoiceDrawer({
     projectDesc: "",
   });
 
+  const [errors, setErrors] = useState<FormErrors>({});
+
   const [isItemsEditing, setIsItemEditing] = useState(false);
   const [itemRows, setItemRows] = useState<ItemRows[]>([]);
+  const [itemErrors, setItemError] = useState("");
 
   const paymentRef = useRef<HTMLDivElement | null>(null);
   const calendarRef = useRef<HTMLDivElement | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
+    const { id, value } = e.target as HTMLInputElement;
 
     setFormData((prev) => ({
       ...prev,
       [id]: value,
+    }));
+
+    setErrors((prev) => ({
+      ...prev,
+      [id]: "",
     }));
   };
 
@@ -97,6 +124,32 @@ export default function InvoiceDrawer({
     ]);
   };
 
+  const validateItemsRows = () => {
+    if (itemRows.length === 0) {
+      setItemError("All fields must be added");
+      return false;
+    }
+    const hasEmptyFields = itemRows.some((row) => {
+      return !row.name.trim() || !row.quantity.trim() || !row.price.trim();
+    });
+
+    if (hasEmptyFields) {
+      setItemError("All fields must be added");
+      return false;
+    }
+
+    const isNumber = itemRows.some((row) => {
+      return Number(row.quantity) > 0 && Number(row.price) > 0;
+    });
+    if (!isNumber) {
+      setItemError("Quantity and price must be a number");
+      return false;
+    }
+
+    setItemError("");
+    return true;
+  };
+
   const handleItemChange = (
     id: string,
     field: keyof Omit<ItemRows, "id">,
@@ -105,6 +158,7 @@ export default function InvoiceDrawer({
     setItemRows((prev) =>
       prev.map((row) => (row.id === id ? { ...row, [field]: value } : row)),
     );
+    setItemError("");
   };
 
   const handleRemoveItems = (id: string) => {
@@ -117,6 +171,8 @@ export default function InvoiceDrawer({
   };
 
   const handleSaveChanges = () => {
+    const isValid = validateItemsRows();
+    if (!isValid) return;
     setIsItemEditing(false);
   };
 
@@ -148,6 +204,56 @@ export default function InvoiceDrawer({
 
   const isOpen = mode !== null;
 
+  const isValidEmail = (email: string) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const validateForm = () => {
+    const newErrors: FormErrors = {};
+    const email = formData.clientEmail.trim();
+
+    if (!formData.fromStreet.trim()) newErrors.fromStreet = "Can't be empty";
+    if (!formData.fromCity.trim()) newErrors.fromCity = "Can't be empty";
+    if (!formData.fromPost.trim()) newErrors.fromPost = "Can't be empty";
+    if (!formData.fromCountry.trim()) newErrors.fromCountry = "Can't be empty";
+    if (!formData.clientName.trim()) newErrors.clientName = "Can't be empty";
+    if (!email) {
+      newErrors.clientEmail = "Can't be empty";
+    } else if (!isValidEmail(email)) {
+      newErrors.clientEmail = "Invalid email";
+    }
+    if (!formData.toStreet.trim()) newErrors.toStreet = "Can't be empty";
+    if (!formData.toCity.trim()) newErrors.toCity = "Can't be empty";
+    if (!formData.toPost.trim()) newErrors.toPost = "Can't be empty";
+    if (!formData.toCountry.trim()) newErrors.toCountry = "Can't be empty";
+    if (!formData.projectDesc.trim()) newErrors.projectDesc = "Can't be empty";
+
+    if (!invoiceDate) {
+      setInvoiceDateError("Select date");
+    } else {
+      setInvoiceDateError("");
+    }
+
+    if (selectedPaymentTerms === "Select payment terms") {
+      setSelectedPaymentTermsError("Select terms");
+    } else {
+      setSelectedPaymentTermsError("");
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0 && !!invoiceDate;
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const isValid = validateForm();
+    if (!isValid) return;
+
+    console.log(formData);
+  };
+
   return (
     <div className={`invoice-drawer ${isOpen ? "invoice-drawer--open" : ""}`}>
       <div className="invoice-drawer__backdrop" />
@@ -156,7 +262,11 @@ export default function InvoiceDrawer({
         <div className="invoice-drawer__container">
           <h1 className="invoice-drawer__title">New Invoice</h1>
 
-          <form className="invoice-drawer__form">
+          <form
+            className="invoice-drawer__form"
+            onSubmit={handleSubmit}
+            noValidate
+          >
             <h3 className="invoice-drawer__section-title">Bill From</h3>
 
             <div className="invoice-drawer__field">
@@ -164,13 +274,16 @@ export default function InvoiceDrawer({
                 Street Address
               </label>
               <input
-                className="invoice-drawer__input"
+                className={`invoice-drawer__input ${errors.fromStreet ? "invoice-drawer__input--error" : ""}`}
                 id="fromStreet"
                 type="text"
                 placeholder=""
                 value={formData.fromStreet}
                 onChange={handleChange}
               />
+              {errors.fromStreet && (
+                <p className="invoice-drawer__error">{errors.fromStreet}</p>
+              )}
             </div>
 
             <div className="invoice-drawer__grid-3">
@@ -179,13 +292,16 @@ export default function InvoiceDrawer({
                   City
                 </label>
                 <input
-                  className="invoice-drawer__input"
+                  className={`invoice-drawer__input ${errors.fromCity ? "invoice-drawer__input--error" : ""}`}
                   id="fromCity"
                   type="text"
                   placeholder=""
                   value={formData.fromCity}
                   onChange={handleChange}
                 />
+                {errors.fromCity && (
+                  <p className="invoice-drawer__error">{errors.fromCity}</p>
+                )}
               </div>
 
               <div className="invoice-drawer__field">
@@ -193,13 +309,16 @@ export default function InvoiceDrawer({
                   Post Code
                 </label>
                 <input
-                  className="invoice-drawer__input"
+                  className={`invoice-drawer__input ${errors.fromPost ? "invoice-drawer__input--error" : ""}`}
                   id="fromPost"
                   type="text"
                   placeholder=""
                   value={formData.fromPost}
                   onChange={handleChange}
                 />
+                {errors.fromPost && (
+                  <p className="invoice-drawer__error">{errors.fromPost}</p>
+                )}
               </div>
 
               <div className="invoice-drawer__field">
@@ -207,13 +326,16 @@ export default function InvoiceDrawer({
                   Country
                 </label>
                 <input
-                  className="invoice-drawer__input"
+                  className={`invoice-drawer__input ${errors.fromCountry ? "invoice-drawer__input--error" : ""}`}
                   id="fromCountry"
                   type="text"
                   placeholder=""
                   value={formData.fromCountry}
                   onChange={handleChange}
                 />
+                {errors.fromCountry && (
+                  <p className="invoice-drawer__error">{errors.fromCountry}</p>
+                )}
               </div>
             </div>
 
@@ -224,13 +346,16 @@ export default function InvoiceDrawer({
                 Client's Name
               </label>
               <input
-                className="invoice-drawer__input"
+                className={`invoice-drawer__input ${errors.clientName ? "invoice-drawer__input--error" : ""}`}
                 id="clientName"
                 type="text"
                 placeholder=""
                 value={formData.clientName}
                 onChange={handleChange}
               />
+              {errors.clientName && (
+                <p className="invoice-drawer__error">{errors.clientName}</p>
+              )}
             </div>
 
             <div className="invoice-drawer__field">
@@ -238,13 +363,16 @@ export default function InvoiceDrawer({
                 Client's Email
               </label>
               <input
-                className="invoice-drawer__input"
+                className={`invoice-drawer__input ${errors.clientEmail ? "invoice-drawer__input--error" : ""}`}
                 id="clientEmail"
                 type="email"
                 placeholder="e.g. email@example.com"
                 value={formData.clientEmail}
                 onChange={handleChange}
               />
+              {errors.clientEmail && (
+                <p className="invoice-drawer__error">{errors.clientEmail}</p>
+              )}
             </div>
 
             <div className="invoice-drawer__field">
@@ -252,13 +380,16 @@ export default function InvoiceDrawer({
                 Street Address
               </label>
               <input
-                className="invoice-drawer__input"
+                className={`invoice-drawer__input ${errors.toStreet ? "invoice-drawer__input--error" : ""}`}
                 id="toStreet"
                 type="text"
                 placeholder=""
                 value={formData.toStreet}
                 onChange={handleChange}
               />
+              {errors.toStreet && (
+                <p className="invoice-drawer__error">{errors.toStreet}</p>
+              )}
             </div>
 
             <div className="invoice-drawer__grid-3">
@@ -267,13 +398,16 @@ export default function InvoiceDrawer({
                   City
                 </label>
                 <input
-                  className="invoice-drawer__input"
+                  className={`invoice-drawer__input ${errors.toCity ? "invoice-drawer__input--error" : ""}`}
                   id="toCity"
                   type="text"
                   placeholder=""
                   value={formData.toCity}
                   onChange={handleChange}
                 />
+                {errors.toCity && (
+                  <p className="invoice-drawer__error">{errors.toCity}</p>
+                )}
               </div>
 
               <div className="invoice-drawer__field">
@@ -281,13 +415,16 @@ export default function InvoiceDrawer({
                   Post Code
                 </label>
                 <input
-                  className="invoice-drawer__input"
+                  className={`invoice-drawer__input ${errors.toPost ? "invoice-drawer__input--error" : ""}`}
                   id="toPost"
                   type="text"
                   placeholder=""
                   value={formData.toPost}
                   onChange={handleChange}
                 />
+                {errors.toPost && (
+                  <p className="invoice-drawer__error">{errors.toPost}</p>
+                )}
               </div>
 
               <div className="invoice-drawer__field">
@@ -295,13 +432,16 @@ export default function InvoiceDrawer({
                   Country
                 </label>
                 <input
-                  className="invoice-drawer__input"
+                  className={`invoice-drawer__input ${errors.toCountry ? "invoice-drawer__input--error" : ""}`}
                   id="toCountry"
                   type="text"
                   placeholder=""
                   value={formData.toCountry}
                   onChange={handleChange}
                 />
+                {errors.toCountry && (
+                  <p className="invoice-drawer__error">{errors.toCountry}</p>
+                )}
               </div>
             </div>
 
@@ -326,6 +466,9 @@ export default function InvoiceDrawer({
                     aria-hidden="true"
                   />
                 </button>
+                {invoiceDateError && (
+                  <p className="invoice-drawer__error">Select date</p>
+                )}
                 {calendar && (
                   <div className="invoice-drawer__calendar">
                     <DayPicker
@@ -357,6 +500,11 @@ export default function InvoiceDrawer({
                     aria-hidden="true"
                   />
                 </button>
+                {selectedPaymentTermsError && (
+                  <p className="invoice-drawer__error">
+                    {selectedPaymentTermsError}
+                  </p>
+                )}
                 {paymentTerms && (
                   <div className="invoice-drawer__terms">
                     <button
@@ -397,13 +545,16 @@ export default function InvoiceDrawer({
                 Project Description
               </label>
               <input
-                className="invoice-drawer__input"
+                className={`invoice-drawer__input ${errors.projectDesc ? "invoice-drawer__input--error" : ""}`}
                 id="projectDesc"
                 type="text"
                 placeholder="e.g. Graphic Design Service"
                 value={formData.projectDesc}
                 onChange={handleChange}
               />
+              {errors.projectDesc && (
+                <p className="invoice-drawer__error">{errors.projectDesc}</p>
+              )}
             </div>
             <div className="invoice-drawer__items">
               <h3 className="invoice-drawer__items-title">Item List</h3>
@@ -479,6 +630,9 @@ export default function InvoiceDrawer({
                 + Add New Item
               </button>
             </div>
+            {itemErrors && (
+              <p className="invoice-drawer__error">{itemErrors}</p>
+            )}
             {/* Footer: UI switch */}
             {isItemsEditing ? (
               <div className="invoice-drawer__footer invoice-drawer__footer--edit">
@@ -517,7 +671,7 @@ export default function InvoiceDrawer({
                   </button>
                   <button
                     className="invoice-drawer__footer-btn invoice-drawer__footer-btn--save"
-                    type="button"
+                    type="submit"
                   >
                     Save &amp; Send
                   </button>
