@@ -1,4 +1,4 @@
-type BillFromSectionProps = {
+type FormFieldProps = {
   id: string;
   label: string;
   formData: string;
@@ -8,7 +8,7 @@ type BillFromSectionProps = {
   placeholder?: string;
 };
 
-export default function BillFromSection({
+export default function FormField({
   errors,
   formData,
   handleChange,
@@ -16,7 +16,7 @@ export default function BillFromSection({
   type,
   placeholder,
   label,
-}: BillFromSectionProps) {
+}: FormFieldProps) {
   return (
     <div className="invoice-drawer__field">
       <label className="invoice-drawer__label" htmlFor={id}>

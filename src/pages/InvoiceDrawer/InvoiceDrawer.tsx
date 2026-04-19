@@ -1,11 +1,10 @@
 import "./InvoiceDrawer.scss";
-import arrowDown from "../../assets/icon-arrow-down.svg";
-import deleteIcon from "../../assets/icon-delete.svg";
-import iconCalendar from "../../assets/icon-calendar.svg";
 import { useState, useRef, useEffect } from "react";
-import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
-import BillFromSection from "./BillFromSection";
+import FormField from "./FormField";
+import Calendar from "./Calendar";
+import PaymentTerms from "./PaymentTerms";
+import ItemRow from "./ItemRow";
 
 export type InvoiceDrawerMode = "new" | "edit" | null;
 
@@ -270,7 +269,7 @@ export default function InvoiceDrawer({
           >
             <h3 className="invoice-drawer__section-title">Bill From</h3>
 
-            <BillFromSection
+            <FormField
               id="fromStreet"
               errors={errors.fromStreet}
               formData={formData.fromStreet}
@@ -281,7 +280,7 @@ export default function InvoiceDrawer({
             />
 
             <div className="invoice-drawer__grid-3">
-              <BillFromSection
+              <FormField
                 id="fromCity"
                 errors={errors.fromCity}
                 formData={formData.fromCity}
@@ -291,7 +290,7 @@ export default function InvoiceDrawer({
                 label="City"
               />
 
-              <BillFromSection
+              <FormField
                 id="fromPost"
                 errors={errors.fromPost}
                 formData={formData.fromPost}
@@ -301,7 +300,7 @@ export default function InvoiceDrawer({
                 label="Post code"
               />
 
-              <BillFromSection
+              <FormField
                 id="fromCountry"
                 errors={errors.fromCountry}
                 formData={formData.fromCountry}
@@ -313,222 +312,92 @@ export default function InvoiceDrawer({
             </div>
 
             <h3 className="invoice-drawer__section-title">Bill To</h3>
+            <FormField
+              id="clientName"
+              errors={errors.clientName}
+              formData={formData.clientName}
+              handleChange={handleChange}
+              type="text"
+              placeholder=""
+              label="Client's Name"
+            />
 
-            <div className="invoice-drawer__field">
-              <label className="invoice-drawer__label" htmlFor="clientName">
-                Client's Name
-              </label>
-              <input
-                className={`invoice-drawer__input ${errors.clientName ? "invoice-drawer__input--error" : ""}`}
-                id="clientName"
-                type="text"
-                placeholder=""
-                value={formData.clientName}
-                onChange={handleChange}
-              />
-              {errors.clientName && (
-                <p className="invoice-drawer__error">{errors.clientName}</p>
-              )}
-            </div>
-
-            <div className="invoice-drawer__field">
-              <label className="invoice-drawer__label" htmlFor="clientEmail">
-                Client's Email
-              </label>
-              <input
-                className={`invoice-drawer__input ${errors.clientEmail ? "invoice-drawer__input--error" : ""}`}
-                id="clientEmail"
-                type="email"
-                placeholder="e.g. email@example.com"
-                value={formData.clientEmail}
-                onChange={handleChange}
-              />
-              {errors.clientEmail && (
-                <p className="invoice-drawer__error">{errors.clientEmail}</p>
-              )}
-            </div>
-
-            <div className="invoice-drawer__field">
-              <label className="invoice-drawer__label" htmlFor="toStreet">
-                Street Address
-              </label>
-              <input
-                className={`invoice-drawer__input ${errors.toStreet ? "invoice-drawer__input--error" : ""}`}
-                id="toStreet"
-                type="text"
-                placeholder=""
-                value={formData.toStreet}
-                onChange={handleChange}
-              />
-              {errors.toStreet && (
-                <p className="invoice-drawer__error">{errors.toStreet}</p>
-              )}
-            </div>
-
+            <FormField
+              id="clientEmail"
+              errors={errors.clientEmail}
+              formData={formData.clientEmail}
+              handleChange={handleChange}
+              type="email"
+              placeholder="e.g. email@example.com"
+              label="Client's Email"
+            />
+            <FormField
+              id="toStreet"
+              errors={errors.toStreet}
+              formData={formData.toStreet}
+              handleChange={handleChange}
+              type="text"
+              placeholder=""
+              label="Street Address"
+            />
             <div className="invoice-drawer__grid-3">
-              <div className="invoice-drawer__field">
-                <label className="invoice-drawer__label" htmlFor="toCity">
-                  City
-                </label>
-                <input
-                  className={`invoice-drawer__input ${errors.toCity ? "invoice-drawer__input--error" : ""}`}
-                  id="toCity"
-                  type="text"
-                  placeholder=""
-                  value={formData.toCity}
-                  onChange={handleChange}
-                />
-                {errors.toCity && (
-                  <p className="invoice-drawer__error">{errors.toCity}</p>
-                )}
-              </div>
+              <FormField
+                id="toCity"
+                errors={errors.toCity}
+                formData={formData.toCity}
+                handleChange={handleChange}
+                type="text"
+                placeholder=""
+                label="City"
+              />
+              <FormField
+                id="toPost"
+                errors={errors.toPost}
+                formData={formData.toPost}
+                handleChange={handleChange}
+                type="text"
+                placeholder=""
+                label="Post Code"
+              />
 
-              <div className="invoice-drawer__field">
-                <label className="invoice-drawer__label" htmlFor="toPost">
-                  Post Code
-                </label>
-                <input
-                  className={`invoice-drawer__input ${errors.toPost ? "invoice-drawer__input--error" : ""}`}
-                  id="toPost"
-                  type="text"
-                  placeholder=""
-                  value={formData.toPost}
-                  onChange={handleChange}
-                />
-                {errors.toPost && (
-                  <p className="invoice-drawer__error">{errors.toPost}</p>
-                )}
-              </div>
-
-              <div className="invoice-drawer__field">
-                <label className="invoice-drawer__label" htmlFor="toCountry">
-                  Country
-                </label>
-                <input
-                  className={`invoice-drawer__input ${errors.toCountry ? "invoice-drawer__input--error" : ""}`}
-                  id="toCountry"
-                  type="text"
-                  placeholder=""
-                  value={formData.toCountry}
-                  onChange={handleChange}
-                />
-                {errors.toCountry && (
-                  <p className="invoice-drawer__error">{errors.toCountry}</p>
-                )}
-              </div>
+              <FormField
+                id="toCountry"
+                errors={errors.toCountry}
+                formData={formData.toCountry}
+                handleChange={handleChange}
+                type="text"
+                placeholder=""
+                label="Country"
+              />
             </div>
 
             <div className="invoice-drawer__grid-2">
-              <div ref={calendarRef} className="invoice-drawer__field">
-                <label className="invoice-drawer__label" htmlFor="invoiceDate">
-                  Invoice Date
-                </label>
-
-                <button
-                  className="invoice-drawer__control"
-                  type="button"
-                  onClick={toggleCalendar}
-                >
-                  <span className="invoice-drawer__control-value">
-                    {invoiceDate ? invoiceDate.toDateString() : "Select date"}
-                  </span>
-                  <img
-                    className="invoice-drawer__control-icon"
-                    src={iconCalendar}
-                    alt=""
-                    aria-hidden="true"
-                  />
-                </button>
-                {invoiceDateError && (
-                  <p className="invoice-drawer__error">Select date</p>
-                )}
-                {calendar && (
-                  <div className="invoice-drawer__calendar">
-                    <DayPicker
-                      mode="single"
-                      selected={invoiceDate}
-                      onSelect={handleInvoiceDate}
-                    />
-                  </div>
-                )}
-              </div>
-
-              <div ref={paymentRef} className="invoice-drawer__field">
-                <label className="invoice-drawer__label" htmlFor="paymentTerms">
-                  Payment Terms
-                </label>
-
-                <button
-                  className="invoice-drawer__control"
-                  type="button"
-                  onClick={togglePayTerms}
-                >
-                  <span className="invoice-drawer__control-value">
-                    {selectedPaymentTerms}
-                  </span>
-                  <img
-                    className="invoice-drawer__control-icon"
-                    src={arrowDown}
-                    alt=""
-                    aria-hidden="true"
-                  />
-                </button>
-                {selectedPaymentTermsError && (
-                  <p className="invoice-drawer__error">
-                    {selectedPaymentTermsError}
-                  </p>
-                )}
-                {paymentTerms && (
-                  <div className="invoice-drawer__terms">
-                    <button
-                      className="invoice-drawer__terms-option"
-                      type="button"
-                      onClick={() => handleSelectPayment("Net 1 Day")}
-                    >
-                      Net 1 Day
-                    </button>
-                    <button
-                      className="invoice-drawer__terms-option"
-                      type="button"
-                      onClick={() => handleSelectPayment("Net 7 Days")}
-                    >
-                      Net 7 Days
-                    </button>
-                    <button
-                      className="invoice-drawer__terms-option"
-                      type="button"
-                      onClick={() => handleSelectPayment("Net 14 Days")}
-                    >
-                      Net 14 Days
-                    </button>
-                    <button
-                      className="invoice-drawer__terms-option"
-                      type="button"
-                      onClick={() => handleSelectPayment("Net 30 Days")}
-                    >
-                      Net 30 Days
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <div className="invoice-drawer__field">
-              <label className="invoice-drawer__label" htmlFor="projectDesc">
-                Project Description
-              </label>
-              <input
-                className={`invoice-drawer__input ${errors.projectDesc ? "invoice-drawer__input--error" : ""}`}
-                id="projectDesc"
-                type="text"
-                placeholder="e.g. Graphic Design Service"
-                value={formData.projectDesc}
-                onChange={handleChange}
+              <Calendar
+                calendarRef={calendarRef}
+                toggleCalendar={toggleCalendar}
+                invoiceDate={invoiceDate}
+                invoiceDateError={invoiceDateError}
+                calendar={calendar}
+                handleInvoiceDate={handleInvoiceDate}
               />
-              {errors.projectDesc && (
-                <p className="invoice-drawer__error">{errors.projectDesc}</p>
-              )}
+              <PaymentTerms
+                paymentRef={paymentRef}
+                togglePayTerms={togglePayTerms}
+                selectedPaymentTerms={selectedPaymentTerms}
+                selectedPaymentTermsError={selectedPaymentTermsError}
+                paymentTerms={paymentTerms}
+                handleSelectPayment={handleSelectPayment}
+              />
             </div>
+            <FormField
+              id="projectDesc"
+              errors={errors.projectDesc}
+              formData={formData.projectDesc}
+              handleChange={handleChange}
+              type="text"
+              placeholder="e.g. email@example.com"
+              label="Project Description"
+            />
             <div className="invoice-drawer__items">
               <h3 className="invoice-drawer__items-title">Item List</h3>
 
@@ -548,51 +417,12 @@ export default function InvoiceDrawer({
               </div>
 
               {itemRows.map((row) => (
-                <div key={row.id} className="invoice-drawer__item-row">
-                  <input
-                    className="invoice-drawer__input invoice-drawer__item-input invoice-drawer__item-input--name"
-                    type="text"
-                    value={row.name}
-                    onChange={(e) =>
-                      handleItemChange(row.id, "name", e.target.value)
-                    }
-                  />
-
-                  <input
-                    className="invoice-drawer__input invoice-drawer__item-input invoice-drawer__item-input--qty"
-                    type="text"
-                    value={row.quantity}
-                    onChange={(e) =>
-                      handleItemChange(row.id, "quantity", e.target.value)
-                    }
-                  />
-
-                  <input
-                    className="invoice-drawer__input invoice-drawer__item-input invoice-drawer__item-input--price"
-                    type="text"
-                    value={row.price}
-                    onChange={(e) =>
-                      handleItemChange(row.id, "price", e.target.value)
-                    }
-                  />
-
-                  <span className="invoice-drawer__item-total">
-                    {(Number(row.quantity) * Number(row.price)).toFixed(2)}
-                  </span>
-
-                  <button
-                    className="invoice-drawer__item-delete"
-                    type="button"
-                    onClick={() => handleRemoveItems(row.id)}
-                  >
-                    <img
-                      className="invoice-drawer__item-delete-icon"
-                      src={deleteIcon}
-                      alt=""
-                      aria-hidden="true"
-                    />
-                  </button>
-                </div>
+                <ItemRow
+                  key={row.id}
+                  row={row}
+                  handleItemChange={handleItemChange}
+                  handleRemoveItems={handleRemoveItems}
+                />
               ))}
 
               <button
