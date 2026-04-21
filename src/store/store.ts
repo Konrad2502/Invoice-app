@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import appDataReducer from '../features/appData/appDataSlice';
+import invoiceReducer from '../features/invoices/invoicesSlice'
 
 export const store = configureStore({
     reducer: {
-        appData: appDataReducer
+        appData: appDataReducer,
+        invoices: invoiceReducer
     }
 });
 
