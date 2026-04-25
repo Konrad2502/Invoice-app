@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import Container from "./components/Container/Container";
 import Nav from "./components/Nav/Nav";
-import { selectAppDataStatus } from "./features/appData/appDataSelectors";
+import {
+  selectAppDataStatus,
+  selectAppData,
+} from "./features/appData/appDataSelectors";
 import Invoices from "./pages/Invoices/Invoices";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import { fetchAppData } from "./features/appData/appDataSlice";
@@ -10,11 +13,12 @@ import InvoiceDetails from "./pages/InvoiceDetails/InvoiceDetails";
 import InvoiceDrawer from "./pages/InvoiceDrawer/InvoiceDrawer";
 import type { InvoiceDrawerMode } from "./pages/InvoiceDrawer/InvoiceDrawer";
 import "./AppShell.scss";
+import { setInvoices } from "./features/invoices/invoicesSlice";
 
 export default function App() {
   const dispatch = useAppDispatch();
   const status = useAppSelector(selectAppDataStatus);
-
+  const appData = useAppSelector(selectAppData);
   const [drawerMode, setDrawerMode] = useState<InvoiceDrawerMode>(null);
 
   useEffect(() => {
@@ -22,6 +26,12 @@ export default function App() {
       dispatch(fetchAppData());
     }
   }, [status, dispatch]);
+
+  useEffect(() => {
+    if (appData) {
+      dispatch(setInvoices(appData));
+    }
+  }, [appData, dispatch]);
 
   return (
     <BrowserRouter>

@@ -1,10 +1,16 @@
 import "./InvoiceDrawer.scss";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, type SyntheticEvent } from "react";
 import "react-day-picker/dist/style.css";
 import FormField from "./FormField";
 import Calendar from "./Calendar";
 import PaymentTerms from "./PaymentTerms";
 import ItemRow from "./ItemRow";
+import { useAppDispatch } from "../../store/hooks";
+import { addInvoice } from "../../features/invoices/invoicesSlice";
+import type {
+  InvoiceData,
+  InvoiceItem,
+} from "../../features/appData/appDataTypes";
 
 export type InvoiceDrawerMode = "new" | "edit" | null;
 
@@ -34,37 +40,82 @@ export type FormData = {
   projectDesc: string;
 };
 
+const initialFormData: FormData = {
+  fromStreet: "",
+  fromCity: "",
+  fromPost: "",
+  fromCountry: "",
+  clientName: "",
+  clientEmail: "",
+  toStreet: "",
+  toCity: "",
+  toPost: "",
+  toCountry: "",
+  projectDesc: "",
+};
+
+const initialPaymentTerms = "Select payment terms";
+
 export type FormErrors = Partial<Record<keyof FormData, string>>;
 
 const makeId = () => `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+const makeInvoiceId = () => Date.now();
+
+const getPaymentTermsDays = (value: string) => {
+  const match = value.match(/\d+/);
+  return match ? Number(match[0]) : 0;
+};
+
+const addDays = (date: Date, days: number) => {
+  const nextDate = new Date(date);
+  nextDate.setDate(nextDate.getDate() + days);
+  return nextDate;
+};
+
+const formatDateToISO = (date: Date) => {
+  return date.toISOString().split("T")[0];
+};
+
+const makeInvoiceCode = () => {
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const first = letters[Math.floor(Math.random() * letters.length)];
+  const second = letters[Math.floor(Math.random() * letters.length)];
+  const number = Math.floor(1000 + Math.random() * 9000);
+
+  return `${first}${second}${number}`;
+};
+
+const mapItems = (rows: ItemRows[]): InvoiceItem[] => {
+  return rows.map((row) => {
+    const quantity = Number(row.quantity);
+    const price = Number(row.price);
+
+    return {
+      name: row.name.trim(),
+      quantity,
+      price,
+      total: quantity * price,
+    };
+  });
+};
 
 export default function InvoiceDrawer({
   mode,
   setDrawerMode,
 }: InvoiceDrawerProps) {
+  const dispatch = useAppDispatch();
+
   const [paymentTerms, setPaymentTerms] = useState(false);
   const [calendar, setCalendar] = useState(false);
   const [invoiceDate, setInvoiceDate] = useState<Date | undefined>(undefined);
   const [invoiceDateError, setInvoiceDateError] = useState("");
-  const [selectedPaymentTerms, setSelectedPaymentTerms] = useState(
-    "Select payment terms",
-  );
+  const [selectedPaymentTerms, setSelectedPaymentTerms] =
+    useState(initialPaymentTerms);
+
   const [selectedPaymentTermsError, setSelectedPaymentTermsError] =
     useState("");
 
-  const [formData, setFormData] = useState<FormData>({
-    fromStreet: "",
-    fromCity: "",
-    fromPost: "",
-    fromCountry: "",
-    clientName: "",
-    clientEmail: "",
-    toStreet: "",
-    toCity: "",
-    toPost: "",
-    toCountry: "",
-    projectDesc: "",
-  });
+  const [formData, setFormData] = useState<FormData>(initialFormData);
 
   const [errors, setErrors] = useState<FormErrors>({});
 
@@ -74,6 +125,54 @@ export default function InvoiceDrawer({
 
   const paymentRef = useRef<HTMLDivElement | null>(null);
   const calendarRef = useRef<HTMLDivElement | null>(null);
+
+  const buildInvoicePayload = (): InvoiceData | null => {
+    if (!invoiceDate) return null;
+
+    const paymentTermsDays = getPaymentTermsDays(selectedPaymentTerms);
+    const items = mapItems(itemRows);
+    const total = items.reduce((sum, item) => sum + item.total, 0);
+
+    return {
+      id: makeInvoiceId(),
+      code: makeInvoiceCode(),
+      createdAt: formatDateToISO(invoiceDate),
+      paymentDue: formatDateToISO(addDays(invoiceDate, paymentTermsDays)),
+      description: formData.projectDesc.trim(),
+      paymentTerms: paymentTermsDays,
+      clientName: formData.clientName.trim(),
+      clientEmail: formData.clientEmail.trim(),
+      status: "pending",
+      senderAddress: {
+        street: formData.fromStreet.trim(),
+        city: formData.fromCity.trim(),
+        postCode: formData.fromPost.trim(),
+        country: formData.fromCountry.trim(),
+      },
+      clientAddress: {
+        street: formData.toStreet.trim(),
+        city: formData.toCity.trim(),
+        postCode: formData.toPost.trim(),
+        country: formData.toCountry.trim(),
+      },
+      items,
+      total,
+    };
+  };
+
+  const resetForm = () => {
+    setFormData(initialFormData);
+    setErrors({});
+    setInvoiceDate(undefined);
+    setInvoiceDateError("");
+    setSelectedPaymentTerms(initialPaymentTerms);
+    setSelectedPaymentTermsError("");
+    setItemRows([]);
+    setItemError("");
+    setIsItemEditing(false);
+    setPaymentTerms(false);
+    setCalendar(false);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target as HTMLInputElement;
@@ -108,6 +207,7 @@ export default function InvoiceDrawer({
   };
 
   const handleCloseDrawer = () => {
+    resetForm();
     setDrawerMode(null);
   };
 
@@ -245,13 +345,21 @@ export default function InvoiceDrawer({
     return Object.keys(newErrors).length === 0 && !!invoiceDate;
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const isValid = validateForm();
-    if (!isValid) return;
+    const isFormValid = validateForm();
+    const areItemsValid = validateItemsRows();
 
-    console.log(formData);
+    if (!isFormValid || !areItemsValid) return;
+
+    const newInvoice = buildInvoicePayload();
+    if (!newInvoice) return;
+
+    dispatch(addInvoice(newInvoice));
+    resetForm();
+    setDrawerMode(null);
+    console.log("uruchomiono akcje", newInvoice);
   };
 
   return (
@@ -395,7 +503,7 @@ export default function InvoiceDrawer({
               formData={formData.projectDesc}
               handleChange={handleChange}
               type="text"
-              placeholder="e.g. email@example.com"
+              placeholder=""
               label="Project Description"
             />
             <div className="invoice-drawer__items">

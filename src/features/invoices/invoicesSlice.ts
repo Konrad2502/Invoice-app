@@ -16,7 +16,7 @@ const invoicesSlice = createSlice({
         setInvoices(state, action: PayloadAction<InvoicesData>) {
             state.invoices = action.payload;
         },
-        addInvoices(state, action: PayloadAction<InvoiceData>) {
+        addInvoice(state, action: PayloadAction<InvoiceData>) {
             state.invoices.unshift(action.payload)
         },
         updateInvoice(state, action: PayloadAction<InvoiceData>) {
@@ -54,7 +54,7 @@ const invoicesSlice = createSlice({
 
 export const {
     setInvoices,
-    addInvoices,
+    addInvoice,
     updateInvoice,
     deleteInvocie,
     markInvoiceAsPaid,

@@ -2,7 +2,7 @@ import "./InvoiceDetails.scss";
 import arrowLeft from "../../assets/icon-arrow-left.svg";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
-import { selectInvoiceById } from "../../features/appData/appDataSelectors";
+import { selectInvoiceById } from "../../features/invoices/invoicesSelectors";
 import { formatDueDate } from "../../utilis/date";
 
 export default function InvoiceDetails() {

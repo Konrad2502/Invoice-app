@@ -4,7 +4,7 @@ import arrowDown from "../../assets/icon-arrow-down.svg";
 import plusIcon from "../../assets/icon-plus.svg";
 import arrowRight from "../../assets/icon-arrow-right.svg";
 import { useAppSelector } from "../../store/hooks";
-import { selectAppData } from "../../features/appData/appDataSelectors";
+// import { selectAppData } from "../../features/appData/appDataSelectors";
 import { formatDueDate } from "../../utilis/date";
 import emptyData from "../../assets/illustration-empty.svg";
 import check from "../../assets/icon-check.svg";
@@ -12,13 +12,14 @@ import { useEffect, useRef, useState, useMemo } from "react";
 import type { InvoiceStatus } from "../../features/appData/appDataTypes";
 import { useNavigate } from "react-router-dom";
 import type { InvoiceDrawerMode } from "../InvoiceDrawer/InvoiceDrawer";
+import { selectInvoices } from "../../features/invoices/invoicesSelectors";
 
 type InvoiceType = {
   setDrawerMode: (mode: InvoiceDrawerMode) => void;
 };
 
 export default function Invoices({ setDrawerMode }: InvoiceType) {
-  const data = useAppSelector(selectAppData);
+  const data = useAppSelector(selectInvoices);
   console.log(data);
 
   const filterRef = useRef<HTMLDivElement | null>(null);
@@ -155,7 +156,7 @@ export default function Invoices({ setDrawerMode }: InvoiceType) {
 
         <div className="invoices__bottom">
           <div className="invoices__list">
-            {filteredData === null ? (
+            {!filteredData || filteredData.length === 0 ? (
               <div className="invoices__empty">
                 <img src={emptyData} alt="" className="invoices__empty-img" />
                 <h2 className="invoices__empty-heading">
