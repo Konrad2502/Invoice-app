@@ -4,9 +4,29 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../store/hooks";
 import { selectInvoiceById } from "../../features/invoices/invoicesSelectors";
 import { formatDueDate } from "../../utilis/date";
+import { useAppDispatch } from "../../store/hooks";
+import {
+  markInvoiceAsPaid,
+  deleteInvocie,
+} from "../../features/invoices/invoicesSlice";
+import type { InvoiceDrawerMode } from "../InvoiceDrawer/InvoiceDrawer";
+import DeletionPopup from "../DeletionPopup/DeletionPopup";
+import { useState } from "react";
 
-export default function InvoiceDetails() {
+type InvoiceDetailsProps = {
+  setDrawerMode: (mode: InvoiceDrawerMode) => void;
+  setEditingInvoiceId: (id: number | null) => void;
+};
+
+export default function InvoiceDetails({
+  setDrawerMode,
+  setEditingInvoiceId,
+}: InvoiceDetailsProps) {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
   const { id } = useParams<{ id: string }>();
   const invoiceId = Number(id);
   const invoice = useAppSelector((state) =>
@@ -16,6 +36,32 @@ export default function InvoiceDetails() {
   if (!invoice) {
     return null;
   }
+
+  const handleMarkAsPaid = (id: number) => {
+    dispatch(markInvoiceAsPaid(id));
+  };
+
+  const handleEditInvoice = () => {
+    setEditingInvoiceId(invoice.id);
+    setDrawerMode("edit");
+    console.log("nacisnieto edit");
+  };
+  console.log(invoice.id);
+
+  const handleDelete = () => {
+    setIsDeleteOpen(true);
+  };
+
+  const handleCloseDelete = () => {
+    setIsDeleteOpen(false);
+  };
+
+  const handleConfirmDelete = () => {
+    dispatch(deleteInvocie(invoice.id));
+    setIsDeleteOpen(false);
+    navigate("/");
+  };
+
   return (
     <section className="invoice-details">
       <div className="invoice-details__content">
@@ -48,20 +94,27 @@ export default function InvoiceDetails() {
             <button
               className="invoice-details__btn invoice-details__btn--edit"
               type="button"
+              onClick={handleEditInvoice}
+              disabled={invoice.status === "paid"}
             >
-              Edit
+              {invoice.status === "paid" ? "Cannot edit" : "Edit"}
             </button>
             <button
               className="invoice-details__btn invoice-details__btn--delete"
               type="button"
+              onClick={handleDelete}
             >
               Delete
             </button>
             <button
               className="invoice-details__btn invoice-details__btn--mark"
               type="button"
+              onClick={() => handleMarkAsPaid(invoice.id)}
+              disabled={invoice.status === "draft" || invoice.status === "paid"}
             >
-              Mark as Paid
+              {invoice.status === "draft" || invoice.status === "paid"
+                ? "Cannot mark draft"
+                : "Mark as Paid"}
             </button>
           </div>
         </div>
@@ -177,6 +230,13 @@ export default function InvoiceDetails() {
           </div>
         </div>
       </div>
+      {isDeleteOpen && (
+        <DeletionPopup
+          invoiceCode={invoice.code}
+          handleConfirmDelete={handleConfirmDelete}
+          handleCloseDelete={handleCloseDelete}
+        />
+      )}
     </section>
   );
 }

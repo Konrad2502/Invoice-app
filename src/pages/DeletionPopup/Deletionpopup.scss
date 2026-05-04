@@ -1,0 +1,70 @@
+@import '../../styles/main.scss';
+
+.deletion__layer {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.deletion__window {
+    width: 100%;
+    max-width: 500px;
+    background-color: $bg-light;
+    padding:  3rem 2rem;
+    border-radius: 10px;
+}
+
+.deletion__content {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.deletion__content-heading {
+     @include heading-l;
+}
+
+.deletion__content-text {
+  font-family: $font-family;
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0;
+  font-weight: 500;
+  color: $periwinkle;
+}
+
+.deletion__content-buttons {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  align-self: flex-end;
+}
+
+.deletion-button {
+  border: none;
+  border-radius: 24px;
+  padding: 14px 24px;
+  cursor: pointer;
+  @include heading-s;
+  letter-spacing:0ch;
+  transition: transform 0.15s ease, opacity 0.15s ease; 
+}
+
+.deletion-button:hover {
+  transform: translateY(-1px);
+  opacity: 0.92;
+}
+
+.deletion-button--cancel {
+background: $lavender;
+color: $grey-blue;
+}
+
+.deletion-button--delete {
+  background: $orange;
+  color: $bg-light;
+}

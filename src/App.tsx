@@ -20,6 +20,7 @@ export default function App() {
   const status = useAppSelector(selectAppDataStatus);
   const appData = useAppSelector(selectAppData);
   const [drawerMode, setDrawerMode] = useState<InvoiceDrawerMode>(null);
+  const [editingInvoiceId, setEditingInvoiceId] = useState<number | null>(null);
 
   useEffect(() => {
     if (status === "idle") {
@@ -43,9 +44,21 @@ export default function App() {
               path="/"
               element={<Invoices setDrawerMode={setDrawerMode} />}
             />
-            <Route path="/invoices/:id" element={<InvoiceDetails />} />
+            <Route
+              path="/invoices/:id"
+              element={
+                <InvoiceDetails
+                  setDrawerMode={setDrawerMode}
+                  setEditingInvoiceId={setEditingInvoiceId}
+                />
+              }
+            />
           </Routes>
-          <InvoiceDrawer mode={drawerMode} setDrawerMode={setDrawerMode} />
+          <InvoiceDrawer
+            mode={drawerMode}
+            setDrawerMode={setDrawerMode}
+            editingInvoiceId={editingInvoiceId}
+          />
         </div>
       </Container>
     </BrowserRouter>
