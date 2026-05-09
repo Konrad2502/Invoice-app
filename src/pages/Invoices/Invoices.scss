@@ -19,6 +19,8 @@
   align-items: center;
 }
 
+
+
 .invoices__header {
   display: flex;
   flex-direction: column;
@@ -29,9 +31,19 @@
   @include heading-l;
 }
 
+.invoices__header-title--dark {
+   @include heading-l;
+  color: $bg-light;
+}
+
 .invoices__header-text {
   @include heading-s;
   color: $periwinkle;
+}
+
+.invoices__header-text--dark {
+  @include heading-s;
+  color: $purple-light;
 }
 
 .invoices__buttons {
@@ -63,6 +75,11 @@
 
 .invoices__filter-text {
   @include heading-s-variant;
+}
+
+.invoices__filter-text--dark {
+  @include heading-s-variant;
+  color: $bg-light;
 }
 
 .invoices__add {
@@ -125,15 +142,25 @@
   z-index: 20;
 }
 
+.invoices__filter-popup--dark {
+  background: rgb(72, 84, 177);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.6);
+}
+
 .invoices__filter-option {
   display: flex;
   align-items: center;
   gap: 12px;
   cursor: pointer;
+ 
 
   &:hover .invoices__filter-box {
     outline: 1px solid $purple;
   }
+}
+
+.invoices__filter-option--dark {
+  color: $bg-light;
 }
 
 .invoices__filter-input {
@@ -188,7 +215,7 @@
 .invoices__empty-img {
   width: 240px;
   max-width: 100%;
-  height: auto;
+  height: 240px;
   margin-bottom: 40px;
 }
 
@@ -235,13 +262,33 @@
   box-shadow: 0 10px 24px rgba(72, 84, 159, 0.10);
   cursor: pointer;
 }
+.invoices__item--dark {
+   background-color: $navy-light;
+  border-radius: 10px;
+  padding: 22px 24px;
+  display: grid;
+  grid-template-columns: 110px 140px 1fr 140px 130px 24px;
+  align-items: center;
+  column-gap: 16px;
+  box-shadow: 0 10px 24px rgba(72, 84, 159, 0.10);
+  cursor: pointer;
+}
 
 .invoices__id {
   @include heading-s;
 }
 
+.invoices__id--dark {
+  @include heading-s;
+  color: $bg-light;
+}
+
 .invoices__hash {
   color: $periwinkle;
+}
+
+.invoices__hash--dark {
+  color: $purple-light;
 }
 
 .invoices__meta {
@@ -253,9 +300,24 @@
   color: $periwinkle;
 }
 
+.invoices__meta--dark {
+  font-family: $font-family;
+  font-size: 14px;
+  line-height: 1.2;
+  letter-spacing: 0;
+  font-weight: 500;
+  color: $bg-light;
+}
+
 .invoices__amount {
   @include heading-s;
   justify-self: end;
+}
+
+.invoices__amount--dark {
+   @include heading-s;
+  justify-self: end;
+  color: $bg-light;
 }
 
 .invoices__status {
@@ -310,6 +372,15 @@
 }
 .invoices__dot--draft {
   background-color: $black;
+}
+
+.invoices--dark .invoices__status--draft {
+  color: $bg-light;
+  background-color: rgba(146, 119, 255, 0.2);
+}
+
+.invoices--dark .invoices__dot--draft {
+  background-color: $bg-light;
 }
 
 .invoices__chevron {

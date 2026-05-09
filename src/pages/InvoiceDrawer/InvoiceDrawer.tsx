@@ -87,11 +87,11 @@ export default function InvoiceDrawer({
       : null,
   );
 
-  // UI state for dropdowns and date picker.
+  // UI state for dropdowns and date picker
   const [paymentTerms, setPaymentTerms] = useState(false);
   const [calendar, setCalendar] = useState(false);
 
-  // Main form state.
+  // Main form state
   const [invoiceDate, setInvoiceDate] = useState<Date | undefined>(undefined);
   const [invoiceDateError, setInvoiceDateError] = useState("");
   const [selectedPaymentTerms, setSelectedPaymentTerms] =
@@ -105,7 +105,7 @@ export default function InvoiceDrawer({
   const [itemRows, setItemRows] = useState<ItemRows[]>([]);
   const [itemErrors, setItemError] = useState("");
 
-  // Refs used to close popups when clicking outside.
+  // Refs used to close popups when clicking outside
   const paymentRef = useRef<HTMLDivElement | null>(null);
   const calendarRef = useRef<HTMLDivElement | null>(null);
 

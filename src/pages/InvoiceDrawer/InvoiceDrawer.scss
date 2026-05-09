@@ -6,6 +6,7 @@
   inset: 0;
   z-index: 60;
   pointer-events: none;
+  visibility: hidden;
 }
 
 .invoice-drawer--open {

@@ -1,6 +1,17 @@
+@import './styles//settings';
+
 .app-shell__content {
   position: relative;
   flex: 1;
   min-width: 0;
   overflow: hidden;
+  background-color: $lavender;
+}
+
+.app-shell__content--dark {
+   position: relative;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+   background-color: $navy-dark;
 }

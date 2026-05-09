@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Container from "./components/Container/Container";
 import Nav from "./components/Nav/Nav";
 import {
@@ -14,6 +14,7 @@ import InvoiceDrawer from "./pages/InvoiceDrawer/InvoiceDrawer";
 import type { InvoiceDrawerMode } from "./pages/InvoiceDrawer/InvoiceDrawer";
 import "./AppShell.scss";
 import { setInvoices } from "./features/invoices/invoicesSlice";
+import { ThemeContext } from "./context/ThemeContext";
 
 export default function App() {
   const dispatch = useAppDispatch();
@@ -21,6 +22,8 @@ export default function App() {
   const appData = useAppSelector(selectAppData);
   const [drawerMode, setDrawerMode] = useState<InvoiceDrawerMode>(null);
   const [editingInvoiceId, setEditingInvoiceId] = useState<number | null>(null);
+
+  const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
     if (status === "idle") {
@@ -38,7 +41,13 @@ export default function App() {
     <BrowserRouter>
       <Container>
         <Nav />
-        <div className="app-shell__content">
+        <div
+          className={
+            theme === "light"
+              ? "app-shell__content"
+              : "app-shell__content--dark"
+          }
+        >
           <Routes>
             <Route
               path="/"

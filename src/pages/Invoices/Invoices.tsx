@@ -8,17 +8,20 @@ import { useAppSelector } from "../../store/hooks";
 import { formatDueDate } from "../../utilis/date";
 import emptyData from "../../assets/illustration-empty.svg";
 import check from "../../assets/icon-check.svg";
-import { useEffect, useRef, useState, useMemo } from "react";
+import { useEffect, useRef, useState, useMemo, useContext } from "react";
 import type { InvoiceStatus } from "../../features/appData/appDataTypes";
 import { useNavigate } from "react-router-dom";
 import type { InvoiceDrawerMode } from "../InvoiceDrawer/InvoiceDrawer";
 import { selectInvoices } from "../../features/invoices/invoicesSelectors";
+import { ThemeContext } from "../../context/ThemeContext";
 
 type InvoiceType = {
   setDrawerMode: (mode: InvoiceDrawerMode) => void;
 };
 
 export default function Invoices({ setDrawerMode }: InvoiceType) {
+  const { theme } = useContext(ThemeContext);
+
   const data = useAppSelector(selectInvoices);
   console.log(data);
 
@@ -63,12 +66,26 @@ export default function Invoices({ setDrawerMode }: InvoiceType) {
   const navigate = useNavigate();
 
   return (
-    <main className="invoices">
+    <main className={theme === "light" ? "invoices" : "invoices--dark"}>
       <div className="invoices__content">
         <div className="invoices__top">
           <div className="invoices__header">
-            <h3 className="invoices__header-title">Invoices</h3>
-            <p className="invoices__header-text">
+            <h3
+              className={
+                theme === "light"
+                  ? "invoices__header-title"
+                  : "invoices__header-title--dark"
+              }
+            >
+              Invoices
+            </h3>
+            <p
+              className={
+                theme === "light"
+                  ? "invoices__header-text"
+                  : "invoices__header-text--dark"
+              }
+            >
               There are {data?.length} total invoices
             </p>
           </div>
@@ -78,7 +95,15 @@ export default function Invoices({ setDrawerMode }: InvoiceType) {
                 onClick={toggleFilterDropdown}
                 className="invoices__filter"
               >
-                <p className="invoices__filter-text">Filter by status</p>
+                <p
+                  className={
+                    theme === "light"
+                      ? "invoices__filter-text"
+                      : "invoices__filter-text--dark"
+                  }
+                >
+                  Filter by status
+                </p>
                 <img
                   className={`invoices__filter-arrow ${filterDropdown ? "invoices__filter-arrow--open" : ""}`}
                   src={arrowDown}
@@ -87,8 +112,20 @@ export default function Invoices({ setDrawerMode }: InvoiceType) {
               </button>
 
               {filterDropdown && (
-                <div className="invoices__filter-popup">
-                  <label className="invoices__filter-option">
+                <div
+                  className={
+                    theme === "light"
+                      ? "invoices__filter-popup"
+                      : "invoices__filter-popup invoices__filter-popup--dark"
+                  }
+                >
+                  <label
+                    className={
+                      theme === "light"
+                        ? "invoices__filter-option"
+                        : "invoices__filter-option invoices__filter-option--dark"
+                    }
+                  >
                     <input
                       className="invoices__filter-input"
                       type="checkbox"
@@ -105,7 +142,13 @@ export default function Invoices({ setDrawerMode }: InvoiceType) {
                     <span className="invoices__filter-label">Draft</span>
                   </label>
 
-                  <label className="invoices__filter-option">
+                  <label
+                    className={
+                      theme === "light"
+                        ? "invoices__filter-option"
+                        : "invoices__filter-option invoices__filter-option--dark"
+                    }
+                  >
                     <input
                       className="invoices__filter-input"
                       type="checkbox"
@@ -122,7 +165,13 @@ export default function Invoices({ setDrawerMode }: InvoiceType) {
                     <span className="invoices__filter-label">Pending</span>
                   </label>
 
-                  <label className="invoices__filter-option">
+                  <label
+                    className={
+                      theme === "light"
+                        ? "invoices__filter-option"
+                        : "invoices__filter-option invoices__filter-option--dark"
+                    }
+                  >
                     <input
                       className="invoices__filter-input"
                       type="checkbox"
@@ -171,18 +220,56 @@ export default function Invoices({ setDrawerMode }: InvoiceType) {
               filteredData.map((item) => (
                 <article
                   key={item.id}
-                  className="invoices__item"
+                  className={
+                    theme === "light"
+                      ? "invoices__item"
+                      : "invoices__item--dark"
+                  }
                   onClick={() => navigate(`/invoices/${item.id}`)}
                 >
-                  <p className="invoices__id">
-                    <span className="invoices__hash">#</span>
+                  <p
+                    className={
+                      theme === "light" ? "invoices__id" : "invoices__id--dark"
+                    }
+                  >
+                    <span
+                      className={
+                        theme === "light"
+                          ? "invoices__hash"
+                          : "invoices__hash--dark"
+                      }
+                    >
+                      #
+                    </span>
                     {item.code}
                   </p>
-                  <p className="invoices__meta">
+                  <p
+                    className={
+                      theme === "light"
+                        ? "invoices__meta"
+                        : "invoices__meta--dark"
+                    }
+                  >
                     Due {formatDueDate(item.paymentDue)}
                   </p>
-                  <p className="invoices__meta">{item.clientName}</p>
-                  <p className="invoices__amount">£ {item.total.toFixed(2)}</p>
+                  <p
+                    className={
+                      theme === "light"
+                        ? "invoices__meta"
+                        : "invoices__meta--dark"
+                    }
+                  >
+                    {item.clientName}
+                  </p>
+                  <p
+                    className={
+                      theme === "light"
+                        ? "invoices__amount"
+                        : "invoices__amount--dark"
+                    }
+                  >
+                    £ {item.total.toFixed(2)}
+                  </p>
                   <div
                     className={`invoices__status invoices__status--${item.status}`}
                   >
