@@ -1,6 +1,12 @@
 // src/pages/InvoiceDrawer/InvoiceDrawer.tsx
 import "./InvoiceDrawer.scss";
-import { useState, useRef, useEffect, type SyntheticEvent } from "react";
+import {
+  useState,
+  useRef,
+  useEffect,
+  type SyntheticEvent,
+  useContext,
+} from "react";
 import "react-day-picker/dist/style.css";
 import FormField from "./FormField";
 import Calendar from "./Calendar";
@@ -24,6 +30,7 @@ import {
   makeInvoiceCode,
   mapItems,
 } from "./utils";
+import { ThemeContext } from "../../context/ThemeContext";
 
 export type InvoiceDrawerMode = "new" | "edit" | null;
 
@@ -108,6 +115,8 @@ export default function InvoiceDrawer({
   // Refs used to close popups when clicking outside
   const paymentRef = useRef<HTMLDivElement | null>(null);
   const calendarRef = useRef<HTMLDivElement | null>(null);
+
+  const { theme } = useContext(ThemeContext);
 
   // Reset the drawer to its initial clean state
   const resetForm = () => {
@@ -522,9 +531,17 @@ export default function InvoiceDrawer({
     <div className={`invoice-drawer ${isOpen ? "invoice-drawer--open" : ""}`}>
       <div className="invoice-drawer__backdrop" />
 
-      <aside className="invoice-drawer__panel" role="dialog" aria-modal="true">
+      <aside
+        className={`invoice-drawer__panel ${
+          theme === "dark" ? "invoice-drawer__panel--dark" : ""
+        }`}
+        role="dialog"
+        aria-modal="true"
+      >
         <div className="invoice-drawer__container">
-          <h1 className="invoice-drawer__title">
+          <h1
+            className={`invoice-drawer__title ${theme === "dark" ? "invoice-drawer__title--dark" : ""}`}
+          >
             {mode === "edit" ? "Edit Invoice" : "New Invoice"}
           </h1>
 
@@ -672,19 +689,31 @@ export default function InvoiceDrawer({
             />
 
             <div className="invoice-drawer__items">
-              <h3 className="invoice-drawer__items-title">Item List</h3>
+              <h3
+                className={`invoice-drawer__items-title ${theme === "dark" ? "invoice-drawer__items-title--dark" : ""}`}
+              >
+                Item List
+              </h3>
 
               <div className="invoice-drawer__items-head">
-                <span className="invoice-drawer__items-col invoice-drawer__items-col--name">
+                <span
+                  className={`invoice-drawer__items-col invoice-drawer__items-col--name ${theme === "dark" ? "invoice-drawer__items-col--dark" : ""}`}
+                >
                   Item Name
                 </span>
-                <span className="invoice-drawer__items-col invoice-drawer__items-col--qty">
+                <span
+                  className={`invoice-drawer__items-col invoice-drawer__items-col--qty ${theme === "dark" ? "invoice-drawer__items-col--dark" : ""}`}
+                >
                   Qty.
                 </span>
-                <span className="invoice-drawer__items-col invoice-drawer__items-col--price">
+                <span
+                  className={`invoice-drawer__items-col invoice-drawer__items-col--price ${theme === "dark" ? "invoice-drawer__items-col--dark" : ""}`}
+                >
                   Price
                 </span>
-                <span className="invoice-drawer__items-col invoice-drawer__items-col--total">
+                <span
+                  className={`invoice-drawer__items-col invoice-drawer__items-col--total ${theme === "dark" ? "invoice-drawer__items-col--dark" : ""}`}
+                >
                   Total
                 </span>
               </div>
@@ -699,7 +728,7 @@ export default function InvoiceDrawer({
               ))}
 
               <button
-                className="invoice-drawer__add-item"
+                className={`invoice-drawer__add-item ${theme === "dark" ? "invoice-drawer__add-item--dark" : ""}`}
                 type="button"
                 onClick={handleAddNewItem}
               >
@@ -712,7 +741,9 @@ export default function InvoiceDrawer({
             )}
 
             {isItemsEditing ? (
-              <div className="invoice-drawer__footer invoice-drawer__footer--edit">
+              <div
+                className={`invoice-drawer__footer invoice-drawer__footer--edit ${theme === "dark" ? "invoice-drawer__footer--dark" : ""}`}
+              >
                 <button
                   className="invoice-drawer__footer-btn invoice-drawer__footer-btn--discard"
                   type="button"
@@ -730,7 +761,9 @@ export default function InvoiceDrawer({
                 </button>
               </div>
             ) : (
-              <div className="invoice-drawer__footer">
+              <div
+                className={`invoice-drawer__footer ${theme === "dark" ? "invoice-drawer__footer--dark" : ""}`}
+              >
                 <button
                   className="invoice-drawer__footer-btn invoice-drawer__footer-btn--discard"
                   type="button"
@@ -754,7 +787,7 @@ export default function InvoiceDrawer({
                     className="invoice-drawer__footer-btn invoice-drawer__footer-btn--save"
                     type="submit"
                   >
-                    {mode === "edit" ? "Save Changes" : "Save &amp; Send"}
+                    {mode === "edit" ? "Save Changes" : "Save & Send"}
                   </button>
                 </div>
               </div>

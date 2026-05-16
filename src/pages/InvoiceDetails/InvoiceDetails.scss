@@ -6,6 +6,9 @@
   width: 100%;
   min-height: 100vh;
   background: $lavender;
+  &--dark {
+    background: $navy-dark;
+  }
 }
 
 .invoice-details__content {
@@ -27,6 +30,9 @@
 .invoice-details__back-text {
   @include heading-m;
   color: $periwinkle;
+  &--dark {
+    color: $bg-light;
+  }
 }
 
 .invoice-details__back-icon {
@@ -48,6 +54,9 @@
   align-items: center;
   justify-content: space-between;
   box-shadow: 0 10px 24px rgba(72, 84, 159, 0.10);
+  &--dark {
+    background-color: $navy;
+  }
 }
 
 .invoice-details__status-left {
@@ -107,6 +116,15 @@
   background: $black;
 }
 
+.invoice-details__status-bar--dark .invoice-details__badge--draft {
+  color: $bg-light;
+   background: rgba(117, 181, 201, 0.08);
+}
+
+.invoice-details__status-bar--dark .invoice-details__dot--draft {
+   background: $bg-light;
+}
+
 .invoice-details__actions {
   display: inline-flex;
   align-items: center;
@@ -149,6 +167,9 @@
   border-radius: 10px;
   padding: 28px;
   box-shadow: 0 10px 24px rgba(72, 84, 159, 0.10);
+  &--dark {
+    background-color: $navy;
+  }
 }
 
 .invoice-details__top {
@@ -162,15 +183,24 @@
   @include heading-m;
   color: $black;
   margin-bottom: 8px;
+  &--dark {
+    color: $bg-light;
+  }
 }
 
 .invoice-details__hash {
   color: $periwinkle;
+  &--dark {
+    color: $purple-light
+  }
 }
 
 .invoice-details__code-desc {
   @include heading-s;
   color: $periwinkle;
+  &--dark {
+    color: $bg-light;
+  }
 }
 
 .invoice-details__sender {
@@ -181,6 +211,9 @@
   @include heading-s;
   color: $periwinkle;
   line-height: 1.6;
+  &--dark {
+    color: $bg-light;
+  }
 }
 
 .invoice-details__middle {
@@ -200,11 +233,17 @@
   @include heading-s;
   color: $periwinkle;
   margin-bottom: 12px;
+  &--dark {
+    color: $bg-light
+  }
 }
 
 .invoice-details__value {
   @include standard;
   color: $black;
+  &--dark {
+    color: $bg-light;
+  }
 }
 
 .invoice-details__address {
@@ -219,6 +258,9 @@
   border-radius: 10px;
   overflow: hidden;
   background: rgba(223, 227, 250, 0.35);
+  &--dark {
+    background: $navy-light;
+  }
 }
 
 .invoice-details__items-head {
@@ -231,6 +273,9 @@
 .invoice-details__items-label {
   @include heading-s;
   color: $periwinkle;
+  &--dark {
+    color:$bg-light;
+  }
 }
 
 .invoice-details__items-label--qty,
@@ -258,21 +303,34 @@
 .invoice-details__item-name {
   @include standard;
   color: $black;
+  &--dark {
+    color: $bg-light
+  }
 }
 
 .invoice-details__item-qty {
   @include standard;
   color: $periwinkle;
+  &--dark {
+    color: $bg-light
+  }
 }
 
 .invoice-details__item-price {
   @include standard;
   color: $periwinkle;
+  &--dark {
+    color: $bg-light
+  }
 }
 
 .invoice-details__item-total {
   @include standard;
   color: $black;
+  &--dark {
+    color: $bg-light;
+  }
+
 }
 
 .invoice-details__amount {
@@ -281,6 +339,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  &--dark {
+    background: $navy-dark
+  }
 }
 
 .invoice-details__amount-label {

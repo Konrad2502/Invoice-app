@@ -16,6 +16,9 @@
     background-color: $bg-light;
     padding:  3rem 2rem;
     border-radius: 10px;
+    &--dark {
+      background-color: $navy-light;
+    }
 }
 
 .deletion__content {
@@ -26,6 +29,9 @@
 
 .deletion__content-heading {
      @include heading-l;
+     &--dark {
+      color: $bg-light;
+     }
 }
 
 .deletion__content-text {
@@ -35,6 +41,9 @@
   letter-spacing: 0;
   font-weight: 500;
   color: $periwinkle;
+  &--dark {
+    color: $bg-light;
+  }
 }
 
 .deletion__content-buttons {

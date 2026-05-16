@@ -192,7 +192,10 @@ export default function Invoices({ setDrawerMode }: InvoiceType) {
             </div>
 
             <button
-              onClick={() => setDrawerMode("new")}
+              onClick={() => {
+                console.log("kliknieto new invocies");
+                setDrawerMode("new");
+              }}
               className="invoices__add"
             >
               <span className="invoices__add-icon">
@@ -208,10 +211,22 @@ export default function Invoices({ setDrawerMode }: InvoiceType) {
             {!filteredData || filteredData.length === 0 ? (
               <div className="invoices__empty">
                 <img src={emptyData} alt="" className="invoices__empty-img" />
-                <h2 className="invoices__empty-heading">
+                <h2
+                  className={
+                    theme === "light"
+                      ? "invoices__empty-heading"
+                      : "invoices__empty-heading invoices__empty-heading--dark"
+                  }
+                >
                   There is nothing here
                 </h2>
-                <p className="invoices__empty-text">
+                <p
+                  className={
+                    theme === "light"
+                      ? "invoices__empty-text"
+                      : "invoices__empty-text invoices__empty-text--dark"
+                  }
+                >
                   Creater an invoice by clicking <span>New Invoice</span> button
                   and get started
                 </p>

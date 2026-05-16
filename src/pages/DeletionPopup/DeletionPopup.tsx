@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import { ThemeContext } from "../../context/ThemeContext";
 import "./Deletionpopup.scss";
 
 type DeletionPopupProps = {
@@ -11,12 +13,34 @@ export default function DeletionPopup({
   invoiceCode,
   handleConfirmDelete,
 }: DeletionPopupProps) {
+  const { theme } = useContext(ThemeContext);
+
   return (
     <div className="deletion__layer">
-      <div className="deletion__window">
+      <div
+        className={
+          theme === "light"
+            ? "deletion__window"
+            : "deletion__window deletion__window--dark"
+        }
+      >
         <div className="deletion__content">
-          <h1 className="deletion__content-heading">Confirm deletion</h1>
-          <p className="deletion__content-text">
+          <h1
+            className={
+              theme === "light"
+                ? "deletion__content-heading"
+                : "deletion__content-heading deletion__content-heading--dark"
+            }
+          >
+            Confirm deletion
+          </h1>
+          <p
+            className={
+              theme === "light"
+                ? "deletion__content-text"
+                : "deletion__content-text deletion__content-text--dark"
+            }
+          >
             Are you sure you want to delete invoice #{invoiceCode}? This action
             cannot be undone
           </p>

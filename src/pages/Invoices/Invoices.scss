@@ -3,7 +3,7 @@
 .invoices {
   width: 100%;
   height: 100%;
-  background-color: $lavender;
+  // background-color: $lavender;
 }
 
 .invoices__content {
@@ -217,11 +217,17 @@
   max-width: 100%;
   height: 240px;
   margin-bottom: 40px;
+  
 }
 
 .invoices__empty-heading {
   @include heading-m;
   margin-bottom: 18px;
+  
+}
+
+.invoices__empty-heading--dark {
+  color: $bg-light;
 }
 
 .invoices__empty-text {
@@ -236,6 +242,12 @@
   span {
     @include heading-s;
     color: $navy;
+  }
+}
+
+.invoices__empty-text--dark {
+  span {
+    color:$bg-light
   }
 }
 

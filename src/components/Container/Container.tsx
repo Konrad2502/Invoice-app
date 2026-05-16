@@ -1,9 +1,16 @@
+import { useContext } from "react";
 import "./Container.scss";
+import { ThemeContext } from "../../context/ThemeContext";
 
 type ContainerProps = {
   children: React.ReactNode;
 };
 
 export default function Container({ children }: ContainerProps) {
-  return <div className="container">{children}</div>;
+  const { theme } = useContext(ThemeContext);
+  return (
+    <div className={`container ${theme === "dark" ? "container--dark" : ""}`}>
+      {children}
+    </div>
+  );
 }

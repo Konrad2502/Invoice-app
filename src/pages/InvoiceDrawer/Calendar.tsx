@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import iconCalendar from "../../assets/icon-calendar.svg";
 import { DayPicker } from "react-day-picker";
+import { ThemeContext } from "../../context/ThemeContext";
 
 type CalendarProps = {
   calendarRef: React.RefObject<HTMLDivElement | null>;
@@ -18,18 +20,25 @@ export default function Calendar({
   calendar,
   handleInvoiceDate,
 }: CalendarProps) {
+  const { theme } = useContext(ThemeContext);
+
   return (
     <div ref={calendarRef} className="invoice-drawer__field">
-      <label className="invoice-drawer__label" htmlFor="invoiceDate">
+      <label
+        className={`invoice-drawer__label ${theme === "dark" ? "invoice-drawer__label--dark" : ""}`}
+        htmlFor="invoiceDate"
+      >
         Invoice Date
       </label>
 
       <button
-        className="invoice-drawer__control"
+        className={`invoice-drawer__control ${theme === "dark" ? "invoice-drawer__control--dark" : ""}`}
         type="button"
         onClick={toggleCalendar}
       >
-        <span className="invoice-drawer__control-value">
+        <span
+          className={`invoice-drawer__control-value ${theme === "dark" ? "invoice-drawer__control-value--dark" : ""}`}
+        >
           {invoiceDate ? invoiceDate.toDateString() : "Select date"}
         </span>
         <img
@@ -41,7 +50,9 @@ export default function Calendar({
       </button>
       {invoiceDateError && <p className="invoice-drawer__error">Select date</p>}
       {calendar && (
-        <div className="invoice-drawer__calendar">
+        <div
+          className={`invoice-drawer__calendar ${theme === "dark" ? "invoice-drawer__calendar--dark" : ""}`}
+        >
           <DayPicker
             mode="single"
             selected={invoiceDate}

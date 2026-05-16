@@ -11,7 +11,8 @@ import {
 } from "../../features/invoices/invoicesSlice";
 import type { InvoiceDrawerMode } from "../InvoiceDrawer/InvoiceDrawer";
 import DeletionPopup from "../DeletionPopup/DeletionPopup";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { ThemeContext } from "../../context/ThemeContext";
 
 type InvoiceDetailsProps = {
   setDrawerMode: (mode: InvoiceDrawerMode) => void;
@@ -24,6 +25,8 @@ export default function InvoiceDetails({
 }: InvoiceDetailsProps) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  const { theme } = useContext(ThemeContext);
 
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
@@ -63,7 +66,13 @@ export default function InvoiceDetails({
   };
 
   return (
-    <section className="invoice-details">
+    <section
+      className={
+        theme === "light"
+          ? "invoice-details"
+          : "invoice-details invoice-details--dark"
+      }
+    >
       <div className="invoice-details__content">
         <button
           className="invoice-details__back"
@@ -71,10 +80,24 @@ export default function InvoiceDetails({
           onClick={() => navigate("/")}
         >
           <img className="invoice-details__back-icon" src={arrowLeft} alt="" />
-          <span className="invoice-details__back-text">Go back</span>
+          <span
+            className={
+              theme == "light"
+                ? "invoice-details__back-text"
+                : "invoice-details__back-text invoice-details__back-text--dark"
+            }
+          >
+            Go back
+          </span>
         </button>
 
-        <div className="invoice-details__status-bar">
+        <div
+          className={
+            theme === "light"
+              ? "invoice-details__status-bar"
+              : "invoice-details__status-bar invoice-details__status-bar--dark"
+          }
+        >
           <div className="invoice-details__status-left">
             <span className="invoice-details__status-label">Status</span>
 
@@ -119,29 +142,79 @@ export default function InvoiceDetails({
           </div>
         </div>
 
-        <div className="invoice-details__card">
+        <div
+          className={
+            theme === "light"
+              ? "invoice-details__card"
+              : "invoice-details__card invoice-details__card--dark"
+          }
+        >
           <div className="invoice-details__top">
             <div className="invoice-details__code">
-              <p className="invoice-details__code-id">
-                <span className="invoice-details__hash">#</span>
+              <p
+                className={
+                  theme === "light"
+                    ? "invoice-details__code-id"
+                    : "invoice-details__code-id invoice-details__code-id--dark"
+                }
+              >
+                <span
+                  className={
+                    theme === "light"
+                      ? "invoice-details__hash"
+                      : "invoice-details__hash invoice-details__hash--dark"
+                  }
+                >
+                  #
+                </span>
                 {invoice?.code}
               </p>
-              <p className="invoice-details__code-desc">
+              <p
+                className={
+                  theme === "light"
+                    ? "invoice-details__code-desc"
+                    : "invoice-details__code-desc invoice-details__code-desc--dark"
+                }
+              >
                 {invoice.description}
               </p>
             </div>
 
             <div className="invoice-details__sender">
-              <p className="invoice-details__small">
+              <p
+                className={
+                  theme === "light"
+                    ? "invoice-details__small"
+                    : "invoice-details__small invoice-details__small--dark"
+                }
+              >
                 {invoice.senderAddress.street}
               </p>
-              <p className="invoice-details__small">
+              <p
+                className={
+                  theme === "light"
+                    ? "invoice-details__small"
+                    : "invoice-details__small invoice-details__small--dark"
+                }
+              >
                 {invoice.senderAddress.city}
               </p>
-              <p className="invoice-details__small">
+              <p
+                className={
+                  theme === "light"
+                    ? "invoice-details__small"
+                    : "invoice-details__small invoice-details__small--dark"
+                }
+              >
                 {invoice.senderAddress.postCode}
               </p>
-              <p className="invoice-details__small">
+              <p
+                className={
+                  theme === "light"
+                    ? "invoice-details__small"
+                    : "invoice-details__small invoice-details__small--dark"
+                }
+              >
                 {invoice.senderAddress.country}
               </p>
             </div>
@@ -150,55 +223,159 @@ export default function InvoiceDetails({
           <div className="invoice-details__middle">
             <div className="invoice-details__dates">
               <div className="invoice-details__block">
-                <p className="invoice-details__label">Invoice Date</p>
-                <p className="invoice-details__value">
+                <p
+                  className={
+                    theme === "light"
+                      ? "invoice-details__label"
+                      : "invoice-details__label invoice-details__label--dark"
+                  }
+                >
+                  Invoice Date
+                </p>
+                <p
+                  className={
+                    theme === "light"
+                      ? "invoice-details__value"
+                      : "invoice-details__value invoice-details__value--dark"
+                  }
+                >
                   {formatDueDate(invoice.createdAt)}
                 </p>
               </div>
 
               <div className="invoice-details__block">
-                <p className="invoice-details__label">Payment Due</p>
-                <p className="invoice-details__value">
+                <p
+                  className={
+                    theme === "light"
+                      ? "invoice-details__label"
+                      : "invoice-details__label invoice-details__label--dark"
+                  }
+                >
+                  Payment Due
+                </p>
+                <p
+                  className={
+                    theme === "light"
+                      ? "invoice-details__value"
+                      : "invoice-details__value invoice-details__value--dark"
+                  }
+                >
                   {formatDueDate(invoice.paymentDue)}
                 </p>
               </div>
             </div>
 
             <div className="invoice-details__billto">
-              <p className="invoice-details__label">Bill To</p>
-              <p className="invoice-details__value">{invoice.clientName}</p>
+              <p
+                className={
+                  theme === "light"
+                    ? "invoice-details__label"
+                    : "invoice-details__label invoice-details__label--dark"
+                }
+              >
+                Bill To
+              </p>
+              <p
+                className={
+                  theme === "light"
+                    ? "invoice-details__value"
+                    : "invoice-details__value invoice-details__value--dark"
+                }
+              >
+                {invoice.clientName}
+              </p>
               <div className="invoice-details__address">
-                <p className="invoice-details__small">
+                <p
+                  className={
+                    theme === "light"
+                      ? "invoice-details__small"
+                      : "invoice-details__small invoice-details__small--dark"
+                  }
+                >
                   {invoice.clientAddress.street}
                 </p>
-                <p className="invoice-details__small">
+                <p
+                  className={
+                    theme === "light"
+                      ? "invoice-details__small"
+                      : "invoice-details__small invoice-details__small--dark"
+                  }
+                >
                   {invoice.clientAddress.city}
                 </p>
-                <p className="invoice-details__small">
+                <p
+                  className={
+                    theme === "light"
+                      ? "invoice-details__small"
+                      : "invoice-details__small invoice-details__small--dark"
+                  }
+                >
                   {invoice.clientAddress.postCode}
                 </p>
-                <p className="invoice-details__small">
+                <p
+                  className={
+                    theme === "light"
+                      ? "invoice-details__small"
+                      : "invoice-details__small invoice-details__small--dark"
+                  }
+                >
                   {invoice.clientAddress.country}
                 </p>
               </div>
             </div>
 
             <div className="invoice-details__sentto">
-              <p className="invoice-details__label">Sent to</p>
-              <p className="invoice-details__value">{invoice.clientEmail}</p>
+              <p
+                className={
+                  theme === "light"
+                    ? "invoice-details__label"
+                    : "invoice-details__label invoice-details__label--dark"
+                }
+              >
+                Sent to
+              </p>
+              <p
+                className={
+                  theme === "light"
+                    ? "invoice-details__value"
+                    : "invoice-details__value invoice-details__value--dark"
+                }
+              >
+                {invoice.clientEmail}
+              </p>
             </div>
           </div>
 
-          <div className="invoice-details__items">
+          <div
+            className={
+              theme === "light"
+                ? "invoice-details__items"
+                : "invoice-details__items invoice-details__items--dark"
+            }
+          >
             <div className="invoice-details__items-head">
-              <p className="invoice-details__items-label">Item Name</p>
-              <p className="invoice-details__items-label invoice-details__items-label--qty">
+              <p
+                className={
+                  theme === "light"
+                    ? "invoice-details__items-label"
+                    : "invoice-details__items-label invoice-details__items-label--dark"
+                }
+              >
+                Item Name
+              </p>
+              <p
+                className={`invoice-details__items-label invoice-details__items-label--qty ${theme === "dark" ? "invoice-details__items-label--dark" : ""}`}
+              >
                 QTY.
               </p>
-              <p className="invoice-details__items-label invoice-details__items-label--price">
+              <p
+                className={`invoice-details__items-label invoice-details__items-label--price ${theme === "dark" ? "invoice-details__items-label--dark" : ""}`}
+              >
                 Price
               </p>
-              <p className="invoice-details__items-label invoice-details__items-label--total">
+              <p
+                className={`invoice-details__items-label invoice-details__items-label--total ${theme === "dark" ? "invoice-details__items-label--dark" : ""}`}
+              >
                 Total
               </p>
             </div>
@@ -207,18 +384,52 @@ export default function InvoiceDetails({
                 key={`${it.name}-${idx}`}
                 className="invoice-details__items-row"
               >
-                <p className="invoice-details__item-name">{it.name}</p>
-                <p className="invoice-details__item-qty">{it.quantity}</p>
-                <p className="invoice-details__item-price">
+                <p
+                  className={
+                    theme === "light"
+                      ? "invoice-details__item-name"
+                      : "invoice-details__item-name invoice-details__item-name--dark"
+                  }
+                >
+                  {it.name}
+                </p>
+                <p
+                  className={
+                    theme === "light"
+                      ? "invoice-details__item-qty"
+                      : "invoice-details__item-qty invoice-details__item-qty--dark"
+                  }
+                >
+                  {it.quantity}
+                </p>
+                <p
+                  className={
+                    theme === "light"
+                      ? "invoice-details__item-price"
+                      : "invoice-details__item-price invoice-details__item-price--dark"
+                  }
+                >
                   £ {it.price.toFixed(2)}
                 </p>
-                <p className="invoice-details__item-total">
+                <p
+                  className={
+                    theme === "light"
+                      ? "invoice-details__item-total"
+                      : "invoice-details__item-total invoice-details__item-total--dark"
+                  }
+                >
                   £ {it.total.toFixed(2)}
                 </p>
               </div>
             ))}
 
-            <div className="invoice-details__amount">
+            <div
+              className={
+                theme === "light"
+                  ? "invoice-details__amount"
+                  : "invoice-details__amount invoice-details__amount--dark"
+              }
+            >
               <p className="invoice-details__amount-label">Amount Due</p>
               <p className="invoice-details__amount-value">
                 £{" "}

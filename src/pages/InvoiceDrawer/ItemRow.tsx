@@ -1,4 +1,6 @@
+import { useContext } from "react";
 import deleteIcon from "../../assets/icon-delete.svg";
+import { ThemeContext } from "../../context/ThemeContext";
 
 type ItemRowProps = {
   row: {
@@ -20,30 +22,33 @@ export default function ItemRow({
   handleItemChange,
   handleRemoveItems,
 }: ItemRowProps) {
+  const { theme } = useContext(ThemeContext);
   return (
     <div key={row.id} className="invoice-drawer__item-row">
       <input
-        className="invoice-drawer__input invoice-drawer__item-input invoice-drawer__item-input--name"
+        className={`invoice-drawer__input invoice-drawer__item-input invoice-drawer__item-input--name ${theme === "dark" ? "invoice-drawer__input--dark" : ""}`}
         type="text"
         value={row.name}
         onChange={(e) => handleItemChange(row.id, "name", e.target.value)}
       />
 
       <input
-        className="invoice-drawer__input invoice-drawer__item-input invoice-drawer__item-input--qty"
+        className={`invoice-drawer__input invoice-drawer__item-input invoice-drawer__item-input--qty ${theme === "dark" ? "invoice-drawer__input--dark" : ""}`}
         type="text"
         value={row.quantity}
         onChange={(e) => handleItemChange(row.id, "quantity", e.target.value)}
       />
 
       <input
-        className="invoice-drawer__input invoice-drawer__item-input invoice-drawer__item-input--price"
+        className={`invoice-drawer__input invoice-drawer__item-input invoice-drawer__item-input--price ${theme === "dark" ? "invoice-drawer__input--dark" : ""}`}
         type="text"
         value={row.price}
         onChange={(e) => handleItemChange(row.id, "price", e.target.value)}
       />
 
-      <span className="invoice-drawer__item-total">
+      <span
+        className={`invoice-drawer__item-total ${theme === "dark" ? "invoice-drawer__item-total--dark" : ""}`}
+      >
         {(Number(row.quantity) * Number(row.price)).toFixed(2)}
       </span>
 
